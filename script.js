@@ -168,13 +168,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- Terminal Typing Effect ---
-    const commands = [
-        { cmd: 'clawdcloud deploy --plan hobby', output: '> OpenClaw развёрнут на managed VPS. Статус: online. Время: 47 сек.' },
-        { cmd: 'clawdcloud status', output: '> OpenClaw v3.2.1 | Uptime: 99.98% | RAM: 1.2/2GB | Бэкап: 2 часа назад' },
-        { cmd: 'clawdcloud connect --telegram @mybot', output: '> Telegram-бот подключён. OpenClaw доступен в чате. Всё готово.' },
-        { cmd: 'clawdcloud upgrade --plan pro', output: '> Тариф обновлён до Pro. 8GB RAM, +$50 бонусных кредитов. Без простоя.' },
-        { cmd: 'clawdcloud logs --tail 5', output: '> [OK] 12 задач выполнено | [OK] Бэкап завершён | [OK] Обновление установлено' },
-    ];
+    function getCommands() {
+        const t = translations[window.__currentLang || 'ru'];
+        return [
+            { cmd: t['terminal.cmd1'], output: t['terminal.out1'] },
+            { cmd: t['terminal.cmd2'], output: t['terminal.out2'] },
+            { cmd: t['terminal.cmd3'], output: t['terminal.out3'] },
+            { cmd: t['terminal.cmd4'], output: t['terminal.out4'] },
+            { cmd: t['terminal.cmd5'], output: t['terminal.out5'] },
+        ];
+    }
 
     const terminalCommand = document.getElementById('terminalCommand');
     const terminalOutput = document.getElementById('terminalOutput');
@@ -208,10 +211,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function runTerminalLoop() {
-        const { cmd, output } = commands[cmdIndex];
+        const cmds = getCommands();
+        const { cmd, output } = cmds[cmdIndex];
         typeCommand(cmd, () => {
             showOutput(output, () => {
-                cmdIndex = (cmdIndex + 1) % commands.length;
+                cmdIndex = (cmdIndex + 1) % cmds.length;
                 runTerminalLoop();
             });
         });
@@ -306,7 +310,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Scroll Reveal with Stagger ---
     const revealElements = document.querySelectorAll(
-        '.step-card, .bento-card, .int-chip, .pricing-card, .pricing-free, .faq-item, .use-case-card, .waitlist-form, .section-badge, .section-title, .section-subtitle'
+        '.step-card, .bento-card, .int-chip, .pricing-card, .pricing-free, .faq-item, .use-case-card, .section-badge, .section-title, .section-subtitle'
     );
 
     revealElements.forEach(el => el.classList.add('reveal'));
@@ -330,26 +334,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     revealElements.forEach(el => revealObserver.observe(el));
 
-    // --- Spots Counter (dynamic from DB) ---
-    const TOTAL_SPOTS = 500;
-    const spotsCounter = document.getElementById('spotsCounter');
-    const waitlistSpots = document.getElementById('waitlistSpots');
+    // --- Deploy Modal ---
+    window.openDeployModal = function() {
+        const modal = document.getElementById('deployModal');
+        modal.classList.add('active');
+        // Re-apply translations to modal content
+        const lang = window.__currentLang || 'ru';
+        if (typeof applyLanguage === 'function') applyLanguage(lang);
+    };
 
-    function updateSpots(count) {
-        const remaining = Math.max(0, TOTAL_SPOTS - count);
-        if (spotsCounter) spotsCounter.textContent = remaining;
-        if (waitlistSpots) waitlistSpots.textContent = remaining;
-    }
+    window.closeDeployModal = function() {
+        document.getElementById('deployModal').classList.remove('active');
+    };
 
-    async function fetchSpots() {
-        try {
-            const res = await fetch('/api/waitlist/count');
-            const { count } = await res.json();
-            updateSpots(count);
-        } catch (_) {}
-    }
+    // Close deploy modal on overlay click
+    document.getElementById('deployModal')?.addEventListener('click', (e) => {
+        if (e.target === e.currentTarget) closeDeployModal();
+    });
 
-    fetchSpots();
+    // Close modals on Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeDeployModal();
+            closeModal();
+        }
+    });
 
     // --- Bar Chart Animation ---
     const barFills = document.querySelectorAll('.bar-fill');
@@ -383,9 +392,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- Success Modal ---
+    window.closeModal = function() {
+        document.getElementById('successModal').classList.remove('active');
+    };
+
+    function showSuccessModal(position) {
+        const lang = window.__currentLang || 'ru';
+        const t = translations[lang];
+        document.getElementById('modalTitle').textContent = t['wl.success.title'];
+        document.getElementById('modalText').textContent = t['wl.success.text'].replace('{pos}', position);
+        document.getElementById('modalOk').textContent = t['wl.success.ok'];
+        document.getElementById('successModal').classList.add('active');
+    }
+
+    // Close modal on overlay click
+    document.getElementById('successModal')?.addEventListener('click', (e) => {
+        if (e.target === e.currentTarget) closeModal();
+    });
+
     // --- Waitlist Form ---
     const waitlistForm = document.getElementById('waitlistForm');
-    const waitlistSuccess = document.getElementById('waitlistSuccess');
 
     if (waitlistForm) {
         waitlistForm.addEventListener('submit', async (e) => {
@@ -394,7 +421,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const submitBtn = waitlistForm.querySelector('button[type="submit"]');
             const originalText = submitBtn.innerHTML;
             submitBtn.disabled = true;
-            submitBtn.innerHTML = 'Отправка...';
+            submitBtn.innerHTML = translations[window.__currentLang || 'ru']['form.sending'];
 
             const formData = {
                 firstName: document.getElementById('firstName').value,
@@ -414,13 +441,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await res.json();
 
                 if (!res.ok) {
-                    throw new Error(data.error || 'Ошибка сервера');
+                    throw new Error(data.error || translations[window.__currentLang || 'ru']['form.error']);
                 }
 
-                updateSpots(data.position);
-                waitlistForm.style.display = 'none';
-                waitlistSuccess.style.display = 'block';
-                waitlistSuccess.style.animation = 'fadeInUp 0.5s ease';
+                waitlistForm.reset();
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+                closeDeployModal();
+                showSuccessModal(data.position);
             } catch (err) {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalText;
@@ -428,6 +456,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // --- Init i18n ---
+    initI18n();
 
     // --- Smooth scroll for all anchor links ---
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {

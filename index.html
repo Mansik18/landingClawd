@@ -23,8 +23,8 @@
         <div class="announcement-inner">
             <span class="announcement-pulse"></span>
             <span class="announcement-live">LIVE</span>
-            <span>Осталось <strong id="spotsCounter">147</strong> бесплатных мест — </span>
-            <a href="#waitlist">Занять место &rarr;</a>
+            <span data-i18n="ann.text">Открыт ранний доступ к ClawdCloud —</span>
+            <a href="#" onclick="openDeployModal();return false" data-i18n="ann.cta">Развернуть OpenClaw &rarr;</a>
         </div>
     </div>
 
@@ -36,14 +36,15 @@
                 <span class="logo-text">ClawdCloud</span>
             </a>
             <div class="nav-links">
-                <a href="#features">Возможности</a>
-                <a href="#use-cases">Кейсы</a>
-                <a href="#pricing">Тарифы</a>
-                <a href="#faq">FAQ</a>
+                <a href="#features" data-i18n="nav.features">Возможности</a>
+                <a href="#use-cases" data-i18n="nav.cases">Кейсы</a>
+                <a href="#pricing" data-i18n="nav.pricing">Тарифы</a>
+                <a href="#faq" data-i18n="nav.faq">FAQ</a>
             </div>
             <div class="nav-actions">
-                <a href="#waitlist" class="btn btn-primary btn-glow">
-                    Занять место
+                <button class="lang-toggle" id="langToggle" onclick="toggleLanguage()">EN</button>
+                <a href="#" onclick="openDeployModal();return false" class="btn btn-primary btn-glow">
+                    <span data-i18n="nav.cta">Развернуть</span>
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </a>
             </div>
@@ -55,11 +56,11 @@
 
     <!-- Mobile Menu -->
     <div class="mobile-menu" id="mobileMenu">
-        <a href="#features">Возможности</a>
-        <a href="#use-cases">Кейсы</a>
-        <a href="#pricing">Тарифы</a>
-        <a href="#faq">FAQ</a>
-        <a href="#waitlist" class="btn btn-primary btn-glow" style="text-align:center;margin-top:8px;">Занять место</a>
+        <a href="#features" data-i18n="nav.features">Возможности</a>
+        <a href="#use-cases" data-i18n="nav.cases">Кейсы</a>
+        <a href="#pricing" data-i18n="nav.pricing">Тарифы</a>
+        <a href="#faq" data-i18n="nav.faq">FAQ</a>
+        <a href="#" onclick="document.getElementById('mobileMenu').classList.remove('active');document.getElementById('mobileMenuBtn').classList.remove('active');openDeployModal();return false" class="btn btn-primary btn-glow" style="text-align:center;margin-top:8px;" data-i18n="nav.cta">Развернуть</a>
     </div>
 
     <!-- Hero Section -->
@@ -69,24 +70,24 @@
         <div class="hero-gradient-orb hero-orb-2"></div>
         <div class="hero-gradient-orb hero-orb-3"></div>
         <div class="container">
-            <div class="hero-badge">
+            <div class="hero-badge" data-i18n="hero.badge">
                 <span class="hero-badge-dot"></span>
                 Уже <strong>847+</strong> развернули OpenClaw
             </div>
             <h1 class="hero-title">
-                <span class="hero-line">Разверни OpenClaw</span>
-                <span class="hero-line"><span class="gradient-text">в два клика</span></span>
+                <span class="hero-line" data-i18n="hero.title1">Разверни OpenClaw</span>
+                <span class="hero-line" data-i18n="hero.title2"><span class="gradient-text">в два клика</span></span>
             </h1>
-            <p class="hero-subtitle">
+            <p class="hero-subtitle" data-i18n="hero.subtitle">
                 Никаких серверов, установки и танцев с бубном.
                 ClawdCloud — платформа, которая разворачивает OpenClaw за вас. <strong>Два клика. 60 секунд. Работает.</strong>
             </p>
             <div class="hero-buttons">
-                <a href="#waitlist" class="btn btn-primary btn-lg btn-glow magnetic-btn">
-                    Развернуть OpenClaw
+                <a href="#" onclick="openDeployModal();return false" class="btn btn-primary btn-lg btn-glow magnetic-btn">
+                    <span data-i18n="hero.cta1">Развернуть OpenClaw</span>
                     <svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </a>
-                <a href="#features" class="btn btn-glass btn-lg magnetic-btn">
+                <a href="#features" class="btn btn-glass btn-lg magnetic-btn" data-i18n="hero.cta2">
                     Что внутри?
                 </a>
             </div>
@@ -115,33 +116,33 @@
     <div class="trust-marquee">
         <div class="marquee-track">
             <div class="marquee-content">
-                <span class="marquee-item">Деплой за 60 секунд</span>
+                <span class="marquee-item" data-i18n="marquee.1">Деплой за 60 секунд</span>
                 <span class="marquee-separator">&diams;</span>
-                <span class="marquee-item">Без установки</span>
+                <span class="marquee-item" data-i18n="marquee.2">Без установки</span>
                 <span class="marquee-separator">&diams;</span>
-                <span class="marquee-item">Без настройки серверов</span>
+                <span class="marquee-item" data-i18n="marquee.3">Без настройки серверов</span>
                 <span class="marquee-separator">&diams;</span>
-                <span class="marquee-item">Управляемый VPS</span>
+                <span class="marquee-item" data-i18n="marquee.4">Управляемый VPS</span>
                 <span class="marquee-separator">&diams;</span>
-                <span class="marquee-item">Авто-обновления</span>
+                <span class="marquee-item" data-i18n="marquee.5">Авто-обновления</span>
                 <span class="marquee-separator">&diams;</span>
-                <span class="marquee-item">Бэкапы из коробки</span>
+                <span class="marquee-item" data-i18n="marquee.6">Бэкапы из коробки</span>
                 <span class="marquee-separator">&diams;</span>
-                <span class="marquee-item">OpenClaw полная версия</span>
+                <span class="marquee-item" data-i18n="marquee.7">OpenClaw полная версия</span>
                 <span class="marquee-separator">&diams;</span>
-                <span class="marquee-item">Деплой за 60 секунд</span>
+                <span class="marquee-item" data-i18n="marquee.1">Деплой за 60 секунд</span>
                 <span class="marquee-separator">&diams;</span>
-                <span class="marquee-item">Без установки</span>
+                <span class="marquee-item" data-i18n="marquee.2">Без установки</span>
                 <span class="marquee-separator">&diams;</span>
-                <span class="marquee-item">Без настройки серверов</span>
+                <span class="marquee-item" data-i18n="marquee.3">Без настройки серверов</span>
                 <span class="marquee-separator">&diams;</span>
-                <span class="marquee-item">Управляемый VPS</span>
+                <span class="marquee-item" data-i18n="marquee.4">Управляемый VPS</span>
                 <span class="marquee-separator">&diams;</span>
-                <span class="marquee-item">Авто-обновления</span>
+                <span class="marquee-item" data-i18n="marquee.5">Авто-обновления</span>
                 <span class="marquee-separator">&diams;</span>
-                <span class="marquee-item">Бэкапы из коробки</span>
+                <span class="marquee-item" data-i18n="marquee.6">Бэкапы из коробки</span>
                 <span class="marquee-separator">&diams;</span>
-                <span class="marquee-item">OpenClaw полная версия</span>
+                <span class="marquee-item" data-i18n="marquee.7">OpenClaw полная версия</span>
                 <span class="marquee-separator">&diams;</span>
             </div>
         </div>
@@ -150,18 +151,18 @@
     <!-- How it Works -->
     <section class="how-it-works" id="how-it-works">
         <div class="container">
-            <span class="section-badge">Как это работает</span>
-            <h2 class="section-title">Два клика — и OpenClaw<br><span class="gradient-text">уже работает</span></h2>
-            <p class="section-subtitle">Без SSH, без Docker, без конфигов. Мы убрали весь геморрой между вами и рабочим OpenClaw.</p>
+            <span class="section-badge" data-i18n="how.badge">Как это работает</span>
+            <h2 class="section-title" data-i18n="how.title">Два клика — и OpenClaw<br><span class="gradient-text">уже работает</span></h2>
+            <p class="section-subtitle" data-i18n="how.subtitle">Без SSH, без Docker, без конфигов. Мы убрали весь геморрой между вами и рабочим OpenClaw.</p>
             <div class="steps-grid">
                 <div class="step-card tilt-card">
                     <div class="step-number-bg">01</div>
                     <div class="step-icon-wrap">
                         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
                     </div>
-                    <h3>Создайте аккаунт</h3>
-                    <p>Один email — и ваша панель управления готова. Быстрее, чем заварить кофе.</p>
-                    <div class="step-time">~15 сек</div>
+                    <h3 data-i18n="how.step1.title">Создайте аккаунт</h3>
+                    <p data-i18n="how.step1.text">Один email — и ваша панель управления готова. Быстрее, чем заварить кофе.</p>
+                    <div class="step-time" data-i18n="how.step1.time">~15 сек</div>
                 </div>
                 <div class="step-connector">
                     <svg width="40" height="2" viewBox="0 0 40 2"><line x1="0" y1="1" x2="40" y2="1" stroke="url(#connGrad)" stroke-width="2" stroke-dasharray="4 4"/><defs><linearGradient id="connGrad"><stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#06b6d4"/></linearGradient></defs></svg>
@@ -171,9 +172,9 @@
                     <div class="step-icon-wrap">
                         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
                     </div>
-                    <h3>Нажмите «Развернуть»</h3>
-                    <p>Выберите тариф, нажмите кнопку — ClawdCloud разворачивает OpenClaw на управляемом VPS.</p>
-                    <div class="step-time">~45 сек</div>
+                    <h3 data-i18n="how.step2.title">Нажмите «Развернуть»</h3>
+                    <p data-i18n="how.step2.text">Выберите тариф, нажмите кнопку — ClawdCloud разворачивает OpenClaw на управляемом VPS.</p>
+                    <div class="step-time" data-i18n="how.step2.time">~45 сек</div>
                 </div>
                 <div class="step-connector">
                     <svg width="40" height="2" viewBox="0 0 40 2"><line x1="0" y1="1" x2="40" y2="1" stroke="url(#connGrad2)" stroke-width="2" stroke-dasharray="4 4"/><defs><linearGradient id="connGrad2"><stop offset="0%" stop-color="#06b6d4"/><stop offset="100%" stop-color="#10b981"/></linearGradient></defs></svg>
@@ -183,9 +184,9 @@
                     <div class="step-icon-wrap">
                         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
                     </div>
-                    <h3>Пользуйтесь</h3>
-                    <p>OpenClaw работает. Обновления, бэкапы, мониторинг — всё на нас. Вы просто пользуетесь.</p>
-                    <div class="step-time">навсегда</div>
+                    <h3 data-i18n="how.step3.title">Пользуйтесь</h3>
+                    <p data-i18n="how.step3.text">OpenClaw работает. Обновления, бэкапы, мониторинг — всё на нас. Вы просто пользуетесь.</p>
+                    <div class="step-time" data-i18n="how.step3.time">навсегда</div>
                 </div>
             </div>
         </div>
@@ -194,16 +195,15 @@
     <!-- Features — Bento Grid -->
     <section class="features" id="features">
         <div class="container">
-            <span class="section-badge">Всё что нужно</span>
-            <h2 class="section-title">Готовый OpenClaw.<br><span class="gradient-text">Ноль настроек.</span></h2>
-            <p class="section-subtitle">Не хостинг, а полноценная среда. Запустили — работает. Точка.</p>
+            <span class="section-badge" data-i18n="feat.badge">Всё что нужно</span>
+            <h2 class="section-title" data-i18n="feat.title">Готовый OpenClaw.<br><span class="gradient-text">Ноль настроек.</span></h2>
+            <p class="section-subtitle" data-i18n="feat.subtitle">Не хостинг, а полноценная среда. Запустили — работает. Точка.</p>
             <div class="bento-grid">
-                <!-- Large Card — Smart Routing (moved first) -->
                 <div class="bento-card bento-wide tilt-card">
                     <div class="bento-card-content">
-                        <div class="feature-tag tag-violet">AI</div>
-                        <h3>Автоматический выбор <span class="gradient-text">модели</span></h3>
-                        <p>Лёгкий запрос — быстрая модель. Глубокий анализ — тяжёлая. ClawdCloud подбирает оптимальную модель под каждую задачу на лету.</p>
+                        <div class="feature-tag tag-violet" data-i18n="feat.tag.ai">AI</div>
+                        <h3 data-i18n="feat.routing.title">Автоматический выбор <span class="gradient-text">модели</span></h3>
+                        <p data-i18n="feat.routing.text">Лёгкий запрос — быстрая модель. Глубокий анализ — тяжёлая. ClawdCloud подбирает оптимальную модель под каждую задачу на лету.</p>
                     </div>
                     <div class="bento-visual">
                         <div class="model-orbit">
@@ -223,12 +223,11 @@
                     </div>
                 </div>
 
-                <!-- Large Card — Cost Savings (moved second) -->
                 <div class="bento-card bento-wide tilt-card">
                     <div class="bento-card-content">
-                        <div class="feature-tag tag-green">Выгода</div>
-                        <h3>AI расходы <span class="gradient-text">в 2x меньше</span></h3>
-                        <p>Оптимизация контекста, кэширование и умная маршрутизация. Вы получаете тот же результат, но платите вдвое меньше, чем при self-host.</p>
+                        <div class="feature-tag tag-green" data-i18n="feat.tag.savings">Выгода</div>
+                        <h3 data-i18n="feat.savings.title">AI расходы <span class="gradient-text">в 2x меньше</span></h3>
+                        <p data-i18n="feat.savings.text">Оптимизация контекста, кэширование и умная маршрутизация. Вы получаете тот же результат, но платите вдвое меньше, чем при self-host.</p>
                     </div>
                     <div class="bento-visual">
                         <div class="savings-chart">
@@ -242,43 +241,42 @@
                                     <span>ClawdCloud</span>
                                 </div>
                             </div>
-                            <div class="chart-label">Стоимость токенов/мес</div>
+                            <div class="chart-label" data-i18n="feat.chart.label">Стоимость токенов/мес</div>
                         </div>
                         <div class="savings-badge">
                             <span class="savings-number" data-target="412">$0</span>
-                            <span class="savings-text">экономия/мес</span>
+                            <span class="savings-text" data-i18n="feat.savings.badge">экономия/мес</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Small Cards (reordered) -->
                 <div class="bento-card bento-small tilt-card">
                     <div class="bento-icon">
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                     </div>
-                    <h3>Защита данных</h3>
-                    <p>Изолированный контейнер, шифрование на диске, ежедневные бэкапы. Ваши данные под замком.</p>
+                    <h3 data-i18n="feat.security.title">Защита данных</h3>
+                    <p data-i18n="feat.security.text">Изолированный контейнер, шифрование на диске, ежедневные бэкапы. Ваши данные под замком.</p>
                 </div>
                 <div class="bento-card bento-small tilt-card">
                     <div class="bento-icon">
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                     </div>
-                    <h3>Встроенный веб-поиск</h3>
-                    <p>OpenClaw ищет в интернете из коробки. Никаких дополнительных ключей — подключено и работает.</p>
+                    <h3 data-i18n="feat.search.title">Встроенный веб-поиск</h3>
+                    <p data-i18n="feat.search.text">OpenClaw ищет в интернете из коробки. Никаких дополнительных ключей — подключено и работает.</p>
                 </div>
                 <div class="bento-card bento-small tilt-card">
                     <div class="bento-icon">
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
                     </div>
-                    <h3>Браузер-агент</h3>
-                    <p>Headless-браузер настроен с первой минуты. Парсинг, заполнение форм, скриншоты — готово.</p>
+                    <h3 data-i18n="feat.browser.title">Браузер-агент</h3>
+                    <p data-i18n="feat.browser.text">Headless-браузер настроен с первой минуты. Парсинг, заполнение форм, скриншоты — готово.</p>
                 </div>
                 <div class="bento-card bento-small tilt-card">
                     <div class="bento-icon">
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M20.95 11A10 10 0 0 0 13 2.05"/></svg>
                     </div>
-                    <h3>Обновления на автомате</h3>
-                    <p>Вышел новый OpenClaw? Он уже у вас. Мы обновляем всё автоматически, без простоев.</p>
+                    <h3 data-i18n="feat.updates.title">Обновления на автомате</h3>
+                    <p data-i18n="feat.updates.text">Вышел новый OpenClaw? Он уже у вас. Мы обновляем всё автоматически, без простоев.</p>
                 </div>
             </div>
         </div>
@@ -287,8 +285,8 @@
     <!-- Integrations Marquee -->
     <section class="integrations">
         <div class="container">
-            <h2 class="section-title">Все интеграции <span class="gradient-text">из коробки</span></h2>
-            <p class="section-subtitle">OpenClaw на ClawdCloud уже подключен к сотням сервисов. Никакой ручной настройки.</p>
+            <h2 class="section-title" data-i18n="int.title">Все интеграции <span class="gradient-text">из коробки</span></h2>
+            <p class="section-subtitle" data-i18n="int.subtitle">OpenClaw на ClawdCloud уже подключен к сотням сервисов. Никакой ручной настройки.</p>
         </div>
         <div class="integration-marquee">
             <div class="marquee-track marquee-slow">
@@ -318,74 +316,74 @@
     <!-- Use Cases — Prompt Showcase -->
     <section class="use-cases" id="use-cases">
         <div class="container">
-            <span class="section-badge">Примеры</span>
-            <h2 class="section-title">Одно сообщение —<br><span class="gradient-text">готовый результат.</span></h2>
-            <p class="section-subtitle">Напишите OpenClaw что нужно. Он разберётся сам — найдёт, сделает, отчитается.</p>
+            <span class="section-badge" data-i18n="cases.badge">Примеры</span>
+            <h2 class="section-title" data-i18n="cases.title">Одно сообщение —<br><span class="gradient-text">готовый результат.</span></h2>
+            <p class="section-subtitle" data-i18n="cases.subtitle">Напишите OpenClaw что нужно. Он разберётся сам — найдёт, сделает, отчитается.</p>
             <div class="prompt-grid">
                 <div class="prompt-card tilt-card">
                     <div class="prompt-category">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                        Личное
+                        <span data-i18n="cases.cat.personal">Личное</span>
                     </div>
-                    <p class="prompt-text">"Найди билеты в Стамбул на выходные, до 30к, прямой рейс. Скинь топ-3 варианта."</p>
+                    <p class="prompt-text" data-i18n="cases.prompt1">"Найди билеты в Стамбул на выходные, до 30к, прямой рейс. Скинь топ-3 варианта."</p>
                     <div class="prompt-result">
                         <span class="result-dot"></span>
-                        Нашёл 3 рейса, отправил в Telegram
+                        <span data-i18n="cases.result1">Нашёл 3 рейса, отправил в Telegram</span>
                     </div>
                 </div>
                 <div class="prompt-card tilt-card">
                     <div class="prompt-category">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                        Бизнес
+                        <span data-i18n="cases.cat.business">Бизнес</span>
                     </div>
-                    <p class="prompt-text">"Собери отчёт по продажам за январь из Google Sheets. Графики + выводы."</p>
+                    <p class="prompt-text" data-i18n="cases.prompt2">"Собери отчёт по продажам за январь из Google Sheets. Графики + выводы."</p>
                     <div class="prompt-result">
                         <span class="result-dot"></span>
-                        PDF-отчёт готов, отправлен на почту
+                        <span data-i18n="cases.result2">PDF-отчёт готов, отправлен на почту</span>
                     </div>
                 </div>
                 <div class="prompt-card tilt-card">
                     <div class="prompt-category">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-                        Разработка
+                        <span data-i18n="cases.cat.dev">Разработка</span>
                     </div>
-                    <p class="prompt-text">"Проверь последний PR на баги, напиши ревью и алертни в Slack если что-то критичное."</p>
+                    <p class="prompt-text" data-i18n="cases.prompt3">"Проверь последний PR на баги, напиши ревью и алертни в Slack если что-то критичное."</p>
                     <div class="prompt-result">
                         <span class="result-dot"></span>
-                        Ревью опубликовано, 2 замечания
+                        <span data-i18n="cases.result3">Ревью опубликовано, 2 замечания</span>
                     </div>
                 </div>
                 <div class="prompt-card tilt-card">
                     <div class="prompt-category">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-                        Контент
+                        <span data-i18n="cases.cat.content">Контент</span>
                     </div>
-                    <p class="prompt-text">"Напиши 5 постов для Telegram-канала на эту неделю. Тема: AI-продуктивность."</p>
+                    <p class="prompt-text" data-i18n="cases.prompt4">"Напиши 5 постов для Telegram-канала на эту неделю. Тема: AI-продуктивность."</p>
                     <div class="prompt-result">
                         <span class="result-dot"></span>
-                        5 постов готовы, запланированы
+                        <span data-i18n="cases.result4">5 постов готовы, запланированы</span>
                     </div>
                 </div>
                 <div class="prompt-card tilt-card">
                     <div class="prompt-category">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                        Исследование
+                        <span data-i18n="cases.cat.research">Исследование</span>
                     </div>
-                    <p class="prompt-text">"Изучи конкурентов в нише SaaS-аналитики. Цены, фичи, слабые места. Таблицей."</p>
+                    <p class="prompt-text" data-i18n="cases.prompt5">"Изучи конкурентов в нише SaaS-аналитики. Цены, фичи, слабые места. Таблицей."</p>
                     <div class="prompt-result">
                         <span class="result-dot"></span>
-                        Сравнительная таблица на 12 конкурентов
+                        <span data-i18n="cases.result5">Сравнительная таблица на 12 конкурентов</span>
                     </div>
                 </div>
                 <div class="prompt-card tilt-card">
                     <div class="prompt-category">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-                        Мониторинг
+                        <span data-i18n="cases.cat.monitoring">Мониторинг</span>
                     </div>
-                    <p class="prompt-text">"Следи за сайтом 24/7. Если упадёт — перезапусти и напиши мне в Telegram."</p>
+                    <p class="prompt-text" data-i18n="cases.prompt6">"Следи за сайтом 24/7. Если упадёт — перезапусти и напиши мне в Telegram."</p>
                     <div class="prompt-result">
                         <span class="result-dot"></span>
-                        Мониторинг активен, uptime 99.9%
+                        <span data-i18n="cases.result6">Мониторинг активен, uptime 99.9%</span>
                     </div>
                 </div>
             </div>
@@ -395,153 +393,151 @@
     <!-- Pricing -->
     <section class="pricing" id="pricing">
         <div class="container">
-            <span class="section-badge">Старт</span>
-            <h2 class="section-title">Бесплатно.<br><span class="gradient-text">Без подвохов.</span></h2>
-            <p class="section-subtitle">Полноценный OpenClaw на управляемом VPS. $0 навсегда. Без карты, без скрытых платежей.</p>
+            <span class="section-badge" data-i18n="price.badge">Старт</span>
+            <h2 class="section-title" data-i18n="price.title">Бесплатно.<br><span class="gradient-text">Без подвохов.</span></h2>
+            <p class="section-subtitle" data-i18n="price.subtitle">Полноценный OpenClaw на управляемом VPS. $0 навсегда. Без карты, без скрытых платежей.</p>
 
-            <!-- Free Tier -->
             <div class="pricing-free tilt-card">
-                <div class="pricing-free-badge">БЕСПЛАТНО</div>
+                <div class="pricing-free-badge" data-i18n="price.free.badge">БЕСПЛАТНО</div>
                 <div class="pricing-free-content">
                     <div class="plan-info">
-                        <h3>Free</h3>
+                        <h3 data-i18n="price.free.name">Free</h3>
                         <div class="plan-price">$0 <span>/мес</span></div>
-                        <p class="plan-credits">$10 AI кредитов/мес включено</p>
+                        <p class="plan-credits" data-i18n="price.free.credits">$10 AI кредитов/мес включено</p>
                         <div class="plan-specs">
                             <span class="spec-tag">2GB RAM</span>
                             <span class="spec-tag">2 vCPU</span>
                             <span class="spec-tag">20GB Диск</span>
                         </div>
                         <ul class="plan-features" style="margin-top:1rem;list-style:none;padding:0;">
-                            <li class="included">Управляемый VPS</li>
-                            <li class="included">Веб-поиск</li>
-                            <li class="included">Браузер-агент</li>
-                            <li class="included">Авто-обновления</li>
-                            <li class="included">Ежедневные бэкапы</li>
-                            <li class="included">Telegram / WhatsApp</li>
+                            <li class="included" data-i18n="price.free.f1">Управляемый VPS</li>
+                            <li class="included" data-i18n="price.free.f2">Веб-поиск</li>
+                            <li class="included" data-i18n="price.free.f3">Браузер-агент</li>
+                            <li class="included" data-i18n="price.free.f4">Авто-обновления</li>
+                            <li class="included" data-i18n="price.free.f5">Ежедневные бэкапы</li>
+                            <li class="included" data-i18n="price.free.f6">Telegram / WhatsApp</li>
                         </ul>
                     </div>
-                    <a href="#waitlist" class="btn btn-primary btn-glow magnetic-btn">Начать бесплатно</a>
+                    <a href="#" onclick="openDeployModal();return false" class="btn btn-primary btn-glow magnetic-btn" data-i18n="price.free.cta">Начать бесплатно</a>
                 </div>
             </div>
-            <p class="pricing-note">$1 = 1 AI кредит &middot; Платные тарифы скоро &middot; Early adopters получат бонусы</p>
+            <p class="pricing-note" data-i18n="price.note">$1 = 1 AI кредит &middot; Платные тарифы скоро &middot; Early adopters получат бонусы</p>
         </div>
     </section>
 
-    <!-- Waitlist Section -->
-    <section class="waitlist" id="waitlist">
-        <div class="container">
-            <div class="waitlist-glow"></div>
-            <div class="waitlist-urgency">
-                <span class="urgency-dot"></span>
-                Осталось <strong id="waitlistSpots">147</strong> бесплатных мест из 500
+    <!-- Deploy Modal -->
+    <div class="modal-overlay" id="deployModal">
+        <div class="modal-card deploy-modal-card">
+            <button class="deploy-modal-close" onclick="closeDeployModal()" aria-label="Close">&times;</button>
+            <div class="deploy-modal-header">
+                <div class="deploy-modal-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                </div>
+                <h3 class="modal-title" data-i18n="deploy.title">Развернуть OpenClaw</h3>
             </div>
-            <h2 class="section-title">Разверните OpenClaw<br><span class="gradient-text">первыми.</span></h2>
-            <p class="section-subtitle">Первые 500 получат бесплатный деплой + бонусные AI кредиты. Без карты, без обязательств.</p>
+            <div class="deploy-modal-notice">
+                <div class="deploy-notice-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                </div>
+                <p data-i18n="deploy.notice">Сейчас у нас повышенная нагрузка — мы подключаем каждого пользователя вручную. Оставьте свои данные, и мы свяжемся с вами в течение пары часов.</p>
+            </div>
             <form class="waitlist-form" id="waitlistForm">
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="firstName">Имя *</label>
-                        <input type="text" id="firstName" name="firstName" placeholder="Александр" required>
+                        <label for="firstName" data-i18n="wl.firstName">Имя *</label>
+                        <input type="text" id="firstName" name="firstName" placeholder="Александр" data-i18n-ph="wl.firstName.ph" required>
                     </div>
                     <div class="form-group">
-                        <label for="lastName">Фамилия</label>
-                        <input type="text" id="lastName" name="lastName" placeholder="Иванов">
+                        <label for="lastName" data-i18n="wl.lastName">Фамилия</label>
+                        <input type="text" id="lastName" name="lastName" placeholder="Иванов" data-i18n-ph="wl.lastName.ph">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="email">Email *</label>
+                    <label for="email" data-i18n="wl.email">Email *</label>
                     <input type="email" id="email" name="email" placeholder="alex@company.com" required>
                 </div>
                 <div class="form-group">
-                    <label for="telegram">Telegram</label>
+                    <label for="telegram" data-i18n="wl.telegram">Telegram</label>
                     <input type="text" id="telegram" name="telegram" placeholder="@username">
                 </div>
                 <div class="form-group">
-                    <label for="useCase">Как будете использовать?</label>
+                    <label for="useCase" data-i18n="wl.useCase">Как будете использовать?</label>
                     <select id="useCase" name="useCase">
-                        <option value="">Выберите...</option>
-                        <option value="personal">Личные дела</option>
-                        <option value="work">Рабочие задачи</option>
-                        <option value="dev">Разработка</option>
-                        <option value="content">Контент</option>
-                        <option value="other">Другое</option>
+                        <option value="" data-i18n="wl.useCase.select">Выберите...</option>
+                        <option value="personal" data-i18n="wl.useCase.personal">Личные дела</option>
+                        <option value="work" data-i18n="wl.useCase.work">Рабочие задачи</option>
+                        <option value="dev" data-i18n="wl.useCase.dev">Разработка</option>
+                        <option value="content" data-i18n="wl.useCase.content">Контент</option>
+                        <option value="other" data-i18n="wl.useCase.other">Другое</option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary btn-lg btn-glow btn-block">
-                    Занять бесплатное место
+                <button type="submit" class="btn btn-primary btn-lg btn-glow btn-block" id="submitBtn">
+                    <span data-i18n="wl.submit">Оставить заявку</span>
                     <svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
-                <p class="form-note">Никакого спама. Только уведомление о запуске.</p>
+                <p class="form-note" data-i18n="wl.note">Никакого спама. Только уведомление о запуске.</p>
             </form>
-            <div class="waitlist-success" id="waitlistSuccess" style="display:none;">
-                <div class="success-check">
-                    <svg width="64" height="64" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" stroke="#10b981" stroke-width="3"/><path d="M20 33l8 8 16-16" stroke="#10b981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </div>
-                <h3>Вы в списке!</h3>
-                <p>Вы среди первых. Мы напишем, как только ClawdCloud будет готов.</p>
-            </div>
         </div>
-    </section>
+    </div>
 
     <!-- FAQ -->
     <section class="faq" id="faq">
         <div class="container">
-            <span class="section-badge">FAQ</span>
-            <h2 class="section-title">Вопросы? <span class="gradient-text">Ответы.</span></h2>
+            <span class="section-badge" data-i18n="faq.badge">FAQ</span>
+            <h2 class="section-title" data-i18n="faq.title">Вопросы? <span class="gradient-text">Ответы.</span></h2>
             <div class="faq-list">
                 <div class="faq-item">
                     <button class="faq-question">
-                        <span>Что такое ClawdCloud?</span>
+                        <span data-i18n="faq.q1">Что такое ClawdCloud?</span>
                         <span class="faq-toggle"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                     </button>
                     <div class="faq-answer">
-                        <p>ClawdCloud — платформа для деплоя OpenClaw. Мы берём на себя сервер, установку, настройку, обновления и бэкапы. Вы просто нажимаете «Развернуть» и пользуетесь готовым OpenClaw.</p>
+                        <p data-i18n="faq.a1">ClawdCloud — платформа для деплоя OpenClaw. Мы берём на себя сервер, установку, настройку, обновления и бэкапы. Вы просто нажимаете «Развернуть» и пользуетесь готовым OpenClaw.</p>
                     </div>
                 </div>
                 <div class="faq-item">
                     <button class="faq-question">
-                        <span>Серьёзно бесплатно? В чём подвох?</span>
+                        <span data-i18n="faq.q2">Серьёзно бесплатно? В чём подвох?</span>
                         <span class="faq-toggle"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                     </button>
                     <div class="faq-answer">
-                        <p>Подвоха нет. Hobby план — бесплатный навсегда: VPS + $10 AI кредитов в месяц. Принесите свой API ключ — и вообще $0. Мы зарабатываем на Pro и Business планах.</p>
+                        <p data-i18n="faq.a2">Никакого подвоха. Мы даём бесплатный триал для первых пользователей — полноценный VPS + AI кредиты. Хотим, чтобы вы попробовали и убедились сами, прежде чем мы запустим платные тарифы.</p>
                     </div>
                 </div>
                 <div class="faq-item">
                     <button class="faq-question">
-                        <span>Я не программист. Мне это подойдёт?</span>
+                        <span data-i18n="faq.q3">Я не программист. Мне это подойдёт?</span>
                         <span class="faq-toggle"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                     </button>
                     <div class="faq-answer">
-                        <p>В этом и смысл ClawdCloud. Никакого SSH, Docker или терминала. Два клика в браузере — и OpenClaw развёрнут. Проще, чем зарегаться в соцсети.</p>
+                        <p data-i18n="faq.a3">В этом и смысл ClawdCloud. Никакого SSH, Docker или терминала. Два клика в браузере — и OpenClaw развёрнут. Проще, чем зарегаться в соцсети.</p>
                     </div>
                 </div>
                 <div class="faq-item">
                     <button class="faq-question">
-                        <span>Почему не захостить OpenClaw самому?</span>
+                        <span data-i18n="faq.q4">Почему не захостить OpenClaw самому?</span>
                         <span class="faq-toggle"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                     </button>
                     <div class="faq-answer">
-                        <p>Можно. Но это VPS, SSH, Docker, конфиги, SSL, обновления, бэкапы, мониторинг... ClawdCloud делает всё это за вас в два клика. Тот же OpenClaw, ноль DevOps.</p>
+                        <p data-i18n="faq.a4">Можно. Но это VPS, SSH, Docker, конфиги, SSL, обновления, бэкапы, мониторинг... ClawdCloud делает всё это за вас в два клика. Тот же OpenClaw, ноль DevOps.</p>
                     </div>
                 </div>
                 <div class="faq-item">
                     <button class="faq-question">
-                        <span>Мои данные в безопасности?</span>
+                        <span data-i18n="faq.q5">Мои данные в безопасности?</span>
                         <span class="faq-toggle"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                     </button>
                     <div class="faq-answer">
-                        <p>Ваши данные — это ваши данные. Шифрование, изоляция, экспорт одним кликом. Никакой привязки. Удалите аккаунт — мы удалим всё.</p>
+                        <p data-i18n="faq.a5">Ваши данные — это ваши данные. Шифрование, изоляция, экспорт одним кликом. Никакой привязки. Удалите аккаунт — мы удалим всё.</p>
                     </div>
                 </div>
                 <div class="faq-item">
                     <button class="faq-question">
-                        <span>Можно ли использовать свой API ключ?</span>
+                        <span data-i18n="faq.q6">Можно ли использовать свой API ключ?</span>
                         <span class="faq-toggle"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                     </button>
                     <div class="faq-answer">
-                        <p>Да. Принесите свой ключ OpenAI, Anthropic или любой другой — без наценки. Или используйте наши кредиты — как удобнее.</p>
+                        <p data-i18n="faq.a6">Да. Принесите свой ключ OpenAI, Anthropic или любой другой — без наценки. Или используйте наши кредиты — как удобнее.</p>
                     </div>
                 </div>
             </div>
@@ -552,10 +548,10 @@
     <section class="cta-section">
         <div class="container">
             <div class="cta-glow"></div>
-            <h2 class="section-title cta-title">Хватит настраивать серверы.<br><span class="gradient-text">Просто разверните OpenClaw.</span></h2>
-            <p class="section-subtitle">Два клика. 60 секунд. Бесплатно. Без карты.</p>
-            <a href="#waitlist" class="btn btn-primary btn-xl btn-glow magnetic-btn">
-                Развернуть OpenClaw
+            <h2 class="section-title cta-title" data-i18n="cta.title">Хватит настраивать серверы.<br><span class="gradient-text">Просто разверните OpenClaw.</span></h2>
+            <p class="section-subtitle" data-i18n="cta.subtitle">Два клика. 60 секунд. Бесплатно. Без карты.</p>
+            <a href="#" onclick="openDeployModal();return false" class="btn btn-primary btn-xl btn-glow magnetic-btn">
+                <span data-i18n="cta.btn">Развернуть OpenClaw</span>
                 <svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
         </div>
@@ -570,33 +566,44 @@
                         <div class="logo-mark"><svg width="20" height="20" viewBox="0 0 32 32" fill="none"><defs><linearGradient id="lgf" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#06b6d4"/></linearGradient></defs><path d="M22.5 13.2a5.5 5.5 0 00-10.6-1.5A4 4 0 008 15.5a4 4 0 004 4h9.5a3.5 3.5 0 001-6.3z" fill="url(#lgf)"/><path d="M17 12.5l-3 4.5h2.5L15.5 21l4-5h-2.5z" fill="#fff"/></svg></div>
                         <span class="logo-text">ClawdCloud</span>
                     </a>
-                    <p>Платформа для деплоя OpenClaw. Без геморроя.</p>
+                    <p data-i18n="footer.desc">Платформа для деплоя OpenClaw. Без геморроя.</p>
                 </div>
                 <div class="footer-col">
-                    <h4>Продукт</h4>
-                    <a href="#features">Возможности</a>
-                    <a href="#use-cases">Кейсы</a>
-                    <a href="#faq">FAQ</a>
+                    <h4 data-i18n="footer.product">Продукт</h4>
+                    <a href="#features" data-i18n="nav.features">Возможности</a>
+                    <a href="#use-cases" data-i18n="nav.cases">Кейсы</a>
+                    <a href="#faq" data-i18n="nav.faq">FAQ</a>
                 </div>
                 <div class="footer-col">
-                    <h4>Ресурсы</h4>
+                    <h4 data-i18n="footer.resources">Ресурсы</h4>
                     <a href="https://docs.openclaw.ai" target="_blank">OpenClaw Docs</a>
                     <a href="#" target="_blank">Discord</a>
                 </div>
                 <div class="footer-col">
-                    <h4>Компания</h4>
-                    <a href="#">Партнёрская программа</a>
-                    <a href="mailto:support@clawdcloud.com">Контакт</a>
-                    <a href="#">Конфиденциальность</a>
-                    <a href="#">Условия</a>
+                    <h4 data-i18n="footer.company">Компания</h4>
+                    <a href="#" data-i18n="footer.partner">Партнёрская программа</a>
+                    <a href="mailto:support@clawdcloud.com" data-i18n="footer.contact">Контакт</a>
+                    <a href="#" data-i18n="footer.privacy">Конфиденциальность</a>
+                    <a href="#" data-i18n="footer.terms">Условия</a>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 ClawdCloud. Все права защищены.</p>
+                <p data-i18n="footer.copy">&copy; 2026 ClawdCloud. Все права защищены.</p>
             </div>
         </div>
     </footer>
 
+    <!-- Success Modal -->
+    <div class="modal-overlay" id="successModal">
+        <div class="modal-card">
+            <div class="modal-emoji">&#x1F64C;</div>
+            <h3 class="modal-title" id="modalTitle"></h3>
+            <p class="modal-text" id="modalText"></p>
+            <button class="btn btn-primary btn-lg btn-glow modal-ok" id="modalOk" onclick="closeModal()"></button>
+        </div>
+    </div>
+
+    <script src="i18n.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
