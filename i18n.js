@@ -426,6 +426,9 @@ function toggleLanguage() {
   const current = window.__currentLang || 'ru';
   const next = current === 'ru' ? 'en' : 'ru';
   applyLanguage(next);
+  if (typeof window.trackEvent === 'function') {
+    window.trackEvent('language_toggle', { from: current, to: next });
+  }
 }
 
 // Initialize

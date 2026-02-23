@@ -10,8 +10,19 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <script>
+        window.__analyticsConfig = {
+            ga4MeasurementId: 'G-DN7ZLK3MEB',
+            yandexMetrikaId: 106965032
+        };
+    </script>
+    <script src="analytics.js"></script>
 </head>
 <body>
+    <noscript>
+        <div><img src="https://mc.yandex.ru/watch/106965032" style="position:absolute; left:-9999px;" alt=""></div>
+    </noscript>
+
     <!-- Noise Overlay -->
     <div class="noise-overlay"></div>
 
@@ -24,7 +35,7 @@
             <span class="announcement-pulse"></span>
             <span class="announcement-live">LIVE</span>
             <span data-i18n="ann.text">Открыт ранний доступ к ClawdCloud —</span>
-            <a href="#" onclick="openDeployModal();return false" data-i18n="ann.cta">Развернуть OpenClaw &rarr;</a>
+            <a href="#" onclick="openDeployModal();return false" data-i18n="ann.cta" data-track-source="announcement_bar">Развернуть OpenClaw &rarr;</a>
         </div>
     </div>
 
@@ -43,7 +54,7 @@
             </div>
             <div class="nav-actions">
                 <button class="lang-toggle" id="langToggle" onclick="toggleLanguage()">EN</button>
-                <a href="#" onclick="openDeployModal();return false" class="btn btn-primary btn-glow">
+                <a href="#" onclick="openDeployModal();return false" class="btn btn-primary btn-glow" data-track-source="navbar">
                     <span data-i18n="nav.cta">Развернуть</span>
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </a>
@@ -60,7 +71,7 @@
         <a href="#use-cases" data-i18n="nav.cases">Кейсы</a>
         <a href="#pricing" data-i18n="nav.pricing">Тарифы</a>
         <a href="#faq" data-i18n="nav.faq">FAQ</a>
-        <a href="#" onclick="document.getElementById('mobileMenu').classList.remove('active');document.getElementById('mobileMenuBtn').classList.remove('active');openDeployModal();return false" class="btn btn-primary btn-glow" style="text-align:center;margin-top:8px;" data-i18n="nav.cta">Развернуть</a>
+        <a href="#" onclick="document.getElementById('mobileMenu').classList.remove('active');document.getElementById('mobileMenuBtn').classList.remove('active');openDeployModal();return false" class="btn btn-primary btn-glow" style="text-align:center;margin-top:8px;" data-i18n="nav.cta" data-track-source="mobile_menu">Развернуть</a>
     </div>
 
     <!-- Hero Section -->
@@ -83,7 +94,7 @@
                 ClawdCloud — платформа, которая разворачивает OpenClaw за вас. <strong>Два клика. 60 секунд. Работает.</strong>
             </p>
             <div class="hero-buttons">
-                <a href="#" onclick="openDeployModal();return false" class="btn btn-primary btn-lg btn-glow magnetic-btn">
+                <a href="#" onclick="openDeployModal();return false" class="btn btn-primary btn-lg btn-glow magnetic-btn" data-track-source="hero_primary">
                     <span data-i18n="hero.cta1">Развернуть OpenClaw</span>
                     <svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </a>
@@ -418,7 +429,7 @@
                             <li class="included" data-i18n="price.free.f6">Telegram / WhatsApp</li>
                         </ul>
                     </div>
-                    <a href="#" onclick="openDeployModal();return false" class="btn btn-primary btn-glow magnetic-btn" data-i18n="price.free.cta">Начать бесплатно</a>
+                    <a href="#" onclick="openDeployModal();return false" class="btn btn-primary btn-glow magnetic-btn" data-i18n="price.free.cta" data-track-source="pricing_card">Начать бесплатно</a>
                 </div>
             </div>
             <p class="pricing-note" data-i18n="price.note">$1 = 1 AI кредит &middot; Платные тарифы скоро &middot; Early adopters получат бонусы</p>
@@ -550,7 +561,7 @@
             <div class="cta-glow"></div>
             <h2 class="section-title cta-title" data-i18n="cta.title">Хватит настраивать серверы.<br><span class="gradient-text">Просто разверните OpenClaw.</span></h2>
             <p class="section-subtitle" data-i18n="cta.subtitle">Два клика. 60 секунд. Бесплатно. Без карты.</p>
-            <a href="#" onclick="openDeployModal();return false" class="btn btn-primary btn-xl btn-glow magnetic-btn">
+            <a href="#" onclick="openDeployModal();return false" class="btn btn-primary btn-xl btn-glow magnetic-btn" data-track-source="final_cta">
                 <span data-i18n="cta.btn">Развернуть OpenClaw</span>
                 <svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>

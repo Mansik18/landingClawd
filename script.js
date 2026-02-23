@@ -3,6 +3,11 @@
    ============================================ */
 
 document.addEventListener('DOMContentLoaded', () => {
+    const trackEvent = (eventName, params = {}) => {
+        if (typeof window.trackEvent === 'function') {
+            window.trackEvent(eventName, params);
+        }
+    };
 
     // --- Cursor Glow Follow ---
     const cursorGlow = document.getElementById('cursorGlow');
@@ -132,6 +137,9 @@ document.addEventListener('DOMContentLoaded', () => {
         mobileMenuBtn.addEventListener('click', () => {
             mobileMenu.classList.toggle('active');
             mobileMenuBtn.classList.toggle('active');
+            trackEvent('mobile_menu_toggle', {
+                state: mobileMenu.classList.contains('active') ? 'open' : 'closed'
+            });
         });
 
         mobileMenu.querySelectorAll('a').forEach(link => {
@@ -163,7 +171,11 @@ document.addEventListener('DOMContentLoaded', () => {
         question.addEventListener('click', () => {
             const isActive = item.classList.contains('active');
             faqItems.forEach(i => i.classList.remove('active'));
-            if (!isActive) item.classList.add('active');
+            if (!isActive) {
+                item.classList.add('active');
+                const questionText = question.textContent ? question.textContent.trim() : '';
+                trackEvent('faq_open', { question: questionText });
+            }
         });
     });
 
@@ -338,6 +350,8 @@ document.addEventListener('DOMContentLoaded', () => {
     window.openDeployModal = function() {
         const modal = document.getElementById('deployModal');
         modal.classList.add('active');
+        const source = document.activeElement?.getAttribute?.('data-track-source') || 'unknown';
+        trackEvent('open_deploy_modal', { source });
         // Re-apply translations to modal content
         const lang = window.__currentLang || 'ru';
         if (typeof applyLanguage === 'function') applyLanguage(lang);
@@ -417,6 +431,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (waitlistForm) {
         waitlistForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            trackEvent('waitlist_submit_attempt');
 
             const submitBtn = waitlistForm.querySelector('button[type="submit"]');
             const originalText = submitBtn.innerHTML;
@@ -449,9 +464,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 submitBtn.innerHTML = originalText;
                 closeDeployModal();
                 showSuccessModal(data.position);
+                trackEvent('waitlist_submit_success', { position: data.position });
             } catch (err) {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalText;
+                trackEvent('waitlist_submit_error', { message: err.message });
                 alert(err.message);
             }
         });
@@ -469,6 +486,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (targetEl) {
                 e.preventDefault();
                 targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                trackEvent('anchor_navigation', { target: targetId });
             }
         });
     });
