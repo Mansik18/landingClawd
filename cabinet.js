@@ -31,23 +31,35 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-function authMiddleware(req, res, next) {
+function resolveUser(req) {
   const token = req.cookies.cabinet_token;
-  if (!token) return res.redirect('/login');
-
+  if (!token) return null;
   try {
     const payload = jwt.verify(token, JWT_SECRET);
-    const user = findUserById.get(payload.userId);
-    if (!user) {
-      res.clearCookie('cabinet_token');
-      return res.redirect('/login');
-    }
-    req.user = user;
-    next();
+    return findUserById.get(payload.userId) || null;
   } catch {
+    return null;
+  }
+}
+
+function authMiddleware(req, res, next) {
+  const user = resolveUser(req);
+  if (!user) {
     res.clearCookie('cabinet_token');
     return res.redirect('/login');
   }
+  req.user = user;
+  next();
+}
+
+function apiAuthMiddleware(req, res, next) {
+  const user = resolveUser(req);
+  if (!user) {
+    res.clearCookie('cabinet_token');
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+  req.user = user;
+  next();
 }
 
 function statusRedirect(user) {
@@ -141,53 +153,46 @@ app.get('/dashboard', authMiddleware, async (req, res) => {
 });
 
 // JSON API for dashboard data
-app.get('/api/me', authMiddleware, async (req, res) => {
+app.get('/api/me', apiAuthMiddleware, async (req, res) => {
   const user = findUserById.get(req.user.id);
   if (!user) return res.status(401).json({ error: 'User not found' });
 
-  // Pending: bot token saved, waiting for admin approval
-  if (user.status === 'pending') {
-    return res.json({
-      status: 'pending',
-      email: user.email,
-      firstName: user.first_name,
-    });
-  }
-
-  // Approved but no container yet (shouldn't normally happen with new flow)
-  if (user.status === 'approved' && !user.container_name) {
-    return res.json({
-      status: 'approved',
-      email: user.email,
-      firstName: user.first_name,
-    });
-  }
-
-  // Active — get container info
-  const containerName = user.container_name;
-  let containerInfo = {};
-
-  try {
-    const resp = await fetch(
-      `${ADMIN_API_URL}/api/containers/${containerName}/info`,
-      { headers: { 'X-Internal-Key': INTERNAL_API_KEY } }
-    );
-    if (resp.ok) containerInfo = await resp.json();
-  } catch (err) {
-    console.error('Container info error:', err);
-  }
-
-  res.json({
+  // Base response — always returned
+  const result = {
     status: user.status,
     email: user.email,
     firstName: user.first_name,
-    containerName,
-    url: containerInfo.url || `https://${containerName}.${PLATFORM_DOMAIN}`,
-    password: containerInfo.password || '',
-    containerStatus: containerInfo.status || 'unknown',
-    spend: containerInfo.spend || 0,
-    maxBudget: containerInfo.max_budget || null,
-  });
+    containerName: user.container_name || null,
+    url: null,
+    password: null,
+    containerStatus: null,
+    spend: 0,
+    maxBudget: null,
+  };
+
+  // Active user with container — fetch live info
+  if (user.status === 'active' && user.container_name) {
+    try {
+      const resp = await fetch(
+        `${ADMIN_API_URL}/api/containers/${user.container_name}/info`,
+        { headers: { 'X-Internal-Key': INTERNAL_API_KEY } }
+      );
+      if (resp.ok) {
+        const info = await resp.json();
+        result.url = info.url || `https://${user.container_name}.${PLATFORM_DOMAIN}`;
+        result.password = info.password || '';
+        result.containerStatus = info.status || 'unknown';
+        result.spend = info.spend || 0;
+        result.maxBudget = info.max_budget || null;
+      }
+    } catch (err) {
+      console.error('Container info error:', err);
+      result.url = `https://${user.container_name}.${PLATFORM_DOMAIN}`;
+      result.containerStatus = 'unknown';
+    }
+  }
+
+  res.json(result);
 });
 
 // --- Static for cabinet pages ---
