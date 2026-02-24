@@ -117,27 +117,24 @@ const translations = {
     "price.free.cta": "Начать бесплатно",
 
     // Deploy Modal
-    "deploy.title": "Развернуть OpenClaw",
-    "deploy.notice": "Сейчас платформа испытывает высокую нагрузку. Каждая заявка проходит дополнительную проверку и ручное рассмотрение, поэтому подключение может занять некоторое время. Оставьте свои данные — мы обработаем вашу заявку в порядке очереди.",
+    "deploy.title": "Регистрация",
+    "deploy.notice": "Создайте аккаунт, чтобы получить доступ к платформе. После регистрации ваша заявка будет рассмотрена администратором.",
 
-    // Waitlist form
+    // Registration form
+    "nav.login": "Войти",
     "wl.firstName": "Имя *",
     "wl.firstName.ph": "Александр",
     "wl.lastName": "Фамилия",
     "wl.lastName.ph": "Иванов",
     "wl.email": "Email *",
     "wl.telegram": "Telegram",
-    "wl.useCase": "Как будете использовать?",
-    "wl.useCase.select": "Выберите...",
-    "wl.useCase.personal": "Личные дела",
-    "wl.useCase.work": "Рабочие задачи",
-    "wl.useCase.dev": "Разработка",
-    "wl.useCase.content": "Контент",
-    "wl.useCase.other": "Другое",
-    "wl.submit": "Оставить заявку",
-    "wl.note": "Никакого спама. Только уведомление о запуске.",
-    "wl.success.title": "Заявка принята!",
-    "wl.success.text": "Ваша заявка добавлена в очередь (позиция: №{pos}).\nОжидайте ответ в течение нескольких дней (2–5). Спасибо за понимание.",
+    "wl.password": "Пароль *",
+    "wl.password.ph": "Минимум 6 символов",
+    "wl.submit": "Зарегистрироваться",
+    "wl.note": "Уже есть аккаунт?",
+    "wl.login.link": "Войти",
+    "wl.success.title": "Регистрация завершена!",
+    "wl.success.text": "Ваша заявка отправлена на рассмотрение. Войдите в личный кабинет для отслеживания статуса.",
     "wl.success.ok": "Понятно",
 
     // FAQ
@@ -299,27 +296,24 @@ const translations = {
     "price.free.cta": "Start for free",
 
     // Deploy Modal
-    "deploy.title": "Deploy OpenClaw",
-    "deploy.notice": "The platform is currently experiencing high demand. Each application undergoes additional verification and manual review, so onboarding may take some time. Leave your details — we'll process your request in order.",
+    "deploy.title": "Sign Up",
+    "deploy.notice": "Create an account to get access to the platform. After registration, your application will be reviewed by an administrator.",
 
-    // Waitlist form
+    // Registration form
+    "nav.login": "Log in",
     "wl.firstName": "First name *",
     "wl.firstName.ph": "John",
     "wl.lastName": "Last name",
     "wl.lastName.ph": "Doe",
     "wl.email": "Email *",
     "wl.telegram": "Telegram",
-    "wl.useCase": "How will you use it?",
-    "wl.useCase.select": "Select...",
-    "wl.useCase.personal": "Personal tasks",
-    "wl.useCase.work": "Work tasks",
-    "wl.useCase.dev": "Development",
-    "wl.useCase.content": "Content",
-    "wl.useCase.other": "Other",
-    "wl.submit": "Submit request",
-    "wl.note": "No spam. Just a launch notification.",
-    "wl.success.title": "Request accepted!",
-    "wl.success.text": "Your request has been added to the queue (position: #{pos}).\nPlease expect a response within a few days (2–5). Thank you for your patience.",
+    "wl.password": "Password *",
+    "wl.password.ph": "At least 6 characters",
+    "wl.submit": "Sign Up",
+    "wl.note": "Already have an account?",
+    "wl.login.link": "Log in",
+    "wl.success.title": "Registration complete!",
+    "wl.success.text": "Your application has been submitted for review. Log in to your cabinet to track your status.",
     "wl.success.ok": "Got it",
 
     // FAQ

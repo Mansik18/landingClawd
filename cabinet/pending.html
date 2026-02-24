@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Заявка на рассмотрении — ClawdCloud</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      background: #0f1117;
+      color: #e2e8f0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card {
+      background: #1a1d27;
+      border: 1px solid #2d3148;
+      border-radius: 0.75rem;
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 460px;
+      margin: 1rem;
+      text-align: center;
+    }
+    .icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+    h1 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #c4b5fd;
+      margin-bottom: 0.75rem;
+    }
+    p {
+      color: #94a3b8;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin-bottom: 0.5rem;
+    }
+    .hint {
+      color: #64748b;
+      font-size: 0.8rem;
+      margin-top: 1.5rem;
+    }
+    .actions {
+      margin-top: 1.5rem;
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+    }
+    .btn {
+      padding: 0.5rem 1.2rem;
+      border-radius: 0.4rem;
+      border: 1px solid #2d3148;
+      background: #1e2132;
+      color: #94a3b8;
+      font-size: 0.85rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+    .btn:hover { opacity: 0.75; }
+    .btn-refresh {
+      background: #6d28d9;
+      color: #fff;
+      border-color: #7c3aed;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="card">
+    <div class="icon">&#9203;</div>
+    <h1>Заявка на рассмотрении</h1>
+    <p>Ваша заявка отправлена администратору.<br>Обычно рассмотрение занимает до 24 часов.</p>
+    <p class="hint">После одобрения вы сможете настроить своего бота.</p>
+
+    <div class="actions">
+      <a href="/logout" class="btn">Выйти</a>
+      <a href="/" class="btn btn-refresh">Обновить статус</a>
+    </div>
+  </div>
+</body>
+</html>

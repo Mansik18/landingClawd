@@ -54,8 +54,9 @@
             </div>
             <div class="nav-actions">
                 <button class="lang-toggle" id="langToggle" onclick="toggleLanguage()">EN</button>
+                <a href="https://my.opencloude.codecrafters.kz/login" class="btn btn-outline" data-i18n="nav.login">Войти</a>
                 <a href="#" onclick="openDeployModal();return false" class="btn btn-primary btn-glow" data-track-source="navbar">
-                    <span data-i18n="nav.cta">Развернуть</span>
+                    <span data-i18n="nav.cta">Регистрация</span>
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </a>
             </div>
@@ -470,21 +471,17 @@
                     <input type="text" id="telegram" name="telegram" autocomplete="username" placeholder="@username">
                 </div>
                 <div class="form-group">
-                    <label for="useCase" data-i18n="wl.useCase">Как будете использовать?</label>
-                    <select id="useCase" name="useCase" autocomplete="off">
-                        <option value="" data-i18n="wl.useCase.select">Выберите...</option>
-                        <option value="personal" data-i18n="wl.useCase.personal">Личные дела</option>
-                        <option value="work" data-i18n="wl.useCase.work">Рабочие задачи</option>
-                        <option value="dev" data-i18n="wl.useCase.dev">Разработка</option>
-                        <option value="content" data-i18n="wl.useCase.content">Контент</option>
-                        <option value="other" data-i18n="wl.useCase.other">Другое</option>
-                    </select>
+                    <label for="regPassword" data-i18n="wl.password">Пароль *</label>
+                    <input type="password" id="regPassword" name="password" autocomplete="new-password" placeholder="Минимум 6 символов" data-i18n-ph="wl.password.ph" required minlength="6">
                 </div>
                 <button type="submit" class="btn btn-primary btn-lg btn-glow btn-block" id="submitBtn">
-                    <span data-i18n="wl.submit">Оставить заявку</span>
+                    <span data-i18n="wl.submit">Зарегистрироваться</span>
                     <svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
-                <p class="form-note" data-i18n="wl.note">Никакого спама. Только уведомление о запуске.</p>
+                <p class="form-note">
+                    <span data-i18n="wl.note">Уже есть аккаунт?</span>
+                    <a href="https://my.opencloude.codecrafters.kz/login" style="color:#a78bfa" data-i18n="wl.login.link">Войти</a>
+                </p>
             </form>
         </div>
     </div>

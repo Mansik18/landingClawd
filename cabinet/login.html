@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Вход — ClawdCloud</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      background: #0f1117;
+      color: #e2e8f0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card {
+      background: #1a1d27;
+      border: 1px solid #2d3148;
+      border-radius: 0.75rem;
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 400px;
+      margin: 1rem;
+    }
+    .logo {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .logo h1 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #a78bfa;
+    }
+    .logo p {
+      color: #64748b;
+      font-size: 0.85rem;
+      margin-top: 0.25rem;
+    }
+    label {
+      display: block;
+      color: #94a3b8;
+      font-size: 0.85rem;
+      margin-bottom: 0.35rem;
+      margin-top: 1rem;
+    }
+    input[type=email], input[type=password] {
+      width: 100%;
+      background: #0f1117;
+      border: 1px solid #2d3148;
+      border-radius: 0.4rem;
+      color: #e2e8f0;
+      padding: 0.6rem 0.8rem;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    input:focus { border-color: #7c3aed; }
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 0.7rem;
+      margin-top: 1.5rem;
+      background: #6d28d9;
+      color: #fff;
+      border: 1px solid #7c3aed;
+      border-radius: 0.4rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .btn:hover { opacity: 0.85; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .error {
+      color: #fca5a5;
+      background: #3f1515;
+      border: 1px solid #991b1b;
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.35rem;
+      font-size: 0.82rem;
+      margin-top: 1rem;
+      display: none;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 1.25rem;
+      font-size: 0.82rem;
+      color: #64748b;
+    }
+    .footer a {
+      color: #a78bfa;
+      text-decoration: none;
+    }
+    .footer a:hover { text-decoration: underline; }
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="card">
+    <div class="logo">
+      <h1>ClawdCloud</h1>
+      <p>Личный кабинет</p>
+    </div>
+
+    <form id="loginForm">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required autocomplete="email" placeholder="you@example.com">
+
+      <label for="password">Пароль</label>
+      <input type="password" id="password" name="password" required autocomplete="current-password" placeholder="Введите пароль">
+
+      <div class="error" id="error"></div>
+
+      <button type="submit" class="btn" id="submitBtn">Войти</button>
+    </form>
+
+    <div class="footer">
+      Нет аккаунта? <a href="https://opencloude.codecrafters.kz">Зарегистрируйтесь</a>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('loginForm');
+    const errorEl = document.getElementById('error');
+    const btn = document.getElementById('submitBtn');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorEl.style.display = 'none';
+      btn.disabled = true;
+      btn.textContent = 'Вход...';
+
+      try {
+        const res = await fetch('/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: document.getElementById('email').value,
+            password: document.getElementById('password').value,
+          }),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.error || 'Ошибка входа');
+        }
+
+        window.location.href = data.redirect || '/';
+      } catch (err) {
+        errorEl.textContent = err.message;
+        errorEl.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Войти';
+      }
+    });
+  </script>
+</body>
+</html>

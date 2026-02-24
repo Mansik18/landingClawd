@@ -411,11 +411,11 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('successModal').classList.remove('active');
     };
 
-    function showSuccessModal(position) {
+    function showSuccessModal() {
         const lang = window.__currentLang || 'ru';
         const t = translations[lang];
         document.getElementById('modalTitle').textContent = t['wl.success.title'];
-        document.getElementById('modalText').textContent = t['wl.success.text'].replace('{pos}', position);
+        document.getElementById('modalText').textContent = t['wl.success.text'];
         document.getElementById('modalOk').textContent = t['wl.success.ok'];
         document.getElementById('successModal').classList.add('active');
     }
@@ -425,13 +425,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target === e.currentTarget) closeModal();
     });
 
-    // --- Waitlist Form ---
+    // --- Registration Form ---
     const waitlistForm = document.getElementById('waitlistForm');
 
     if (waitlistForm) {
         waitlistForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            trackEvent('waitlist_submit_attempt');
+            trackEvent('register_submit_attempt');
 
             const submitBtn = waitlistForm.querySelector('button[type="submit"]');
             const originalText = submitBtn.innerHTML;
@@ -443,11 +443,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 lastName: document.getElementById('lastName').value,
                 email: document.getElementById('email').value,
                 telegram: document.getElementById('telegram').value,
-                useCase: document.getElementById('useCase').value,
+                password: document.getElementById('regPassword').value,
             };
 
             try {
-                const res = await fetch('/api/waitlist', {
+                const res = await fetch('/api/register', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData),
@@ -463,12 +463,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalText;
                 closeDeployModal();
-                showSuccessModal(data.position);
-                trackEvent('waitlist_submit_success', { position: data.position });
+                showSuccessModal();
+                trackEvent('register_submit_success');
             } catch (err) {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalText;
-                trackEvent('waitlist_submit_error', { message: err.message });
+                trackEvent('register_submit_error', { message: err.message });
                 alert(err.message);
             }
         });

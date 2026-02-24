@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Кабинет — ClawdCloud</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      background: #0f1117;
+      color: #e2e8f0;
+      min-height: 100vh;
+    }
+    header {
+      background: #1a1d27;
+      border-bottom: 1px solid #2d3148;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    header h1 { font-size: 1.05rem; font-weight: 700; color: #a78bfa; }
+    .header-right { display: flex; align-items: center; gap: 1rem; }
+    .user-name { color: #94a3b8; font-size: 0.85rem; }
+    .btn-logout {
+      color: #64748b;
+      text-decoration: none;
+      font-size: 0.82rem;
+      transition: color 0.15s;
+    }
+    .btn-logout:hover { color: #e2e8f0; }
+
+    main {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+    h2 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+      color: #c4b5fd;
+    }
+    .card {
+      background: #1a1d27;
+      border: 1px solid #2d3148;
+      border-radius: 0.6rem;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .card-title {
+      color: #64748b;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+    .field {
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+      padding: 0.4rem 0;
+    }
+    .field-label {
+      color: #64748b;
+      font-size: 0.82rem;
+      min-width: 80px;
+      flex-shrink: 0;
+    }
+    .field-value {
+      font-size: 0.88rem;
+      word-break: break-all;
+    }
+    .field-value a {
+      color: #a78bfa;
+      text-decoration: none;
+    }
+    .field-value a:hover { text-decoration: underline; }
+    .mono {
+      font-family: ui-monospace, monospace;
+      font-size: 0.84rem;
+      background: #0f1117;
+      border: 1px solid #2d3148;
+      border-radius: 0.25rem;
+      padding: 0.2rem 0.5rem;
+      user-select: all;
+      cursor: text;
+    }
+    .badge {
+      display: inline-block;
+      padding: 0.15rem 0.5rem;
+      border-radius: 9999px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .badge-running { background: #14532d; color: #86efac; }
+    .badge-stopped { background: #3f1515; color: #fca5a5; }
+    .badge-unknown { background: #312e0e; color: #fde68a; }
+
+    /* Spend bar */
+    .spend-bar-outer {
+      width: 100%;
+      height: 8px;
+      background: #0f1117;
+      border-radius: 4px;
+      margin-top: 0.5rem;
+      overflow: hidden;
+    }
+    .spend-bar-inner {
+      height: 100%;
+      border-radius: 4px;
+      background: #6d28d9;
+      transition: width 0.3s;
+    }
+    .spend-bar-inner.warn { background: #d97706; }
+    .spend-bar-inner.over { background: #dc2626; }
+    .spend-text {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #e2e8f0;
+    }
+    .spend-limit {
+      color: #64748b;
+      font-size: 0.85rem;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 3rem;
+      color: #64748b;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <h1>ClawdCloud</h1>
+    <div class="header-right">
+      <span class="user-name" id="userName"></span>
+      <a href="/logout" class="btn-logout">Выйти</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="loading" id="loading">Загрузка...</div>
+
+    <div id="content" style="display:none">
+      <h2>Ваш бот</h2>
+
+      <div class="card">
+        <div class="card-title">Контейнер</div>
+        <div class="field">
+          <span class="field-label">Статус</span>
+          <span class="field-value" id="statusBadge"></span>
+        </div>
+        <div class="field">
+          <span class="field-label">URL</span>
+          <span class="field-value"><a id="botUrl" href="#" target="_blank"></a></span>
+        </div>
+        <div class="field">
+          <span class="field-label">Пароль</span>
+          <span class="field-value"><span class="mono" id="password"></span></span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Расход</div>
+        <div style="display:flex;align-items:baseline;gap:0.5rem">
+          <span class="spend-text" id="spendAmount">$0.00</span>
+          <span class="spend-limit" id="spendLimit"></span>
+        </div>
+        <div class="spend-bar-outer">
+          <div class="spend-bar-inner" id="spendBar" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    async function loadDashboard() {
+      try {
+        const res = await fetch('/api/me');
+        if (res.status === 401) {
+          window.location.href = '/login';
+          return;
+        }
+        const data = await res.json();
+
+        if (data.status !== 'active') {
+          window.location.href = '/';
+          return;
+        }
+
+        document.getElementById('userName').textContent = data.email;
+        document.getElementById('botUrl').href = data.url;
+        document.getElementById('botUrl').textContent = data.url;
+        document.getElementById('password').textContent = data.password || '—';
+
+        // Status badge
+        const badge = document.getElementById('statusBadge');
+        const st = data.containerStatus || 'unknown';
+        const cls = st === 'running' ? 'badge-running' : st === 'exited' ? 'badge-stopped' : 'badge-unknown';
+        const label = st === 'running' ? 'Running' : st === 'exited' ? 'Stopped' : st;
+        badge.innerHTML = `<span class="badge ${cls}">${label}</span>`;
+
+        // Spend
+        const spend = data.spend || 0;
+        const budget = data.maxBudget;
+        document.getElementById('spendAmount').textContent = `$${spend.toFixed(2)}`;
+
+        if (budget) {
+          document.getElementById('spendLimit').textContent = `/ $${budget.toFixed(2)}`;
+          const pct = Math.min((spend / budget) * 100, 100);
+          const bar = document.getElementById('spendBar');
+          bar.style.width = pct + '%';
+          if (pct >= 100) bar.classList.add('over');
+          else if (pct >= 80) bar.classList.add('warn');
+        }
+
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('content').style.display = 'block';
+      } catch (err) {
+        document.getElementById('loading').textContent = 'Ошибка загрузки: ' + err.message;
+      }
+    }
+
+    loadDashboard();
+    // Refresh every 60s
+    setInterval(loadDashboard, 60000);
+  </script>
+</body>
+</html>
