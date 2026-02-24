@@ -463,8 +463,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalText;
                 closeDeployModal();
-                showSuccessModal();
                 trackEvent('register_submit_success');
+                window.location.href = 'https://my.opencloude.codecrafters.kz/login';
             } catch (err) {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalText;

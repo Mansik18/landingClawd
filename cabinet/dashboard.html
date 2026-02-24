@@ -100,6 +100,7 @@
     .badge-running { background: #14532d; color: #86efac; }
     .badge-stopped { background: #3f1515; color: #fca5a5; }
     .badge-unknown { background: #312e0e; color: #fde68a; }
+    .badge-pending { background: #312e0e; color: #fde68a; }
 
     /* Spend bar */
     .spend-bar-outer {
@@ -133,6 +134,46 @@
       padding: 3rem;
       color: #64748b;
     }
+
+    /* Pending state */
+    .pending-card {
+      text-align: center;
+      padding: 2.5rem 1.5rem;
+    }
+    .pending-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+    .pending-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #fde68a;
+      margin-bottom: 0.5rem;
+    }
+    .pending-text {
+      color: #94a3b8;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+    .pending-hint {
+      color: #64748b;
+      font-size: 0.8rem;
+      margin-top: 1.5rem;
+    }
+    .btn-refresh {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.5rem 1.2rem;
+      background: #6d28d9;
+      color: #fff;
+      border: 1px solid #7c3aed;
+      border-radius: 0.4rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+    .btn-refresh:hover { opacity: 0.85; }
   </style>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -148,7 +189,22 @@
   <main>
     <div class="loading" id="loading">Загрузка...</div>
 
-    <div id="content" style="display:none">
+    <!-- Pending state -->
+    <div id="pendingContent" style="display:none">
+      <div class="card pending-card">
+        <div class="pending-icon">&#9203;</div>
+        <div class="pending-title">Ожидание подтверждения</div>
+        <p class="pending-text">
+          Ваш токен бота сохранён. Заявка отправлена администратору.<br>
+          После подтверждения ваш бот будет запущен автоматически.
+        </p>
+        <p class="pending-hint">Обычно рассмотрение занимает до 24 часов.</p>
+        <a href="/" class="btn-refresh">Обновить статус</a>
+      </div>
+    </div>
+
+    <!-- Active state -->
+    <div id="activeContent" style="display:none">
       <h2>Ваш бот</h2>
 
       <div class="card">
@@ -190,12 +246,20 @@
         }
         const data = await res.json();
 
-        if (data.status !== 'active') {
-          window.location.href = '/';
+        document.getElementById('userName').textContent = data.email;
+        document.getElementById('loading').style.display = 'none';
+
+        // Pending or approved (no container yet)
+        if (data.status === 'pending' || (data.status === 'approved' && !data.containerName)) {
+          document.getElementById('pendingContent').style.display = 'block';
+          document.getElementById('activeContent').style.display = 'none';
           return;
         }
 
-        document.getElementById('userName').textContent = data.email;
+        // Active — show full dashboard
+        document.getElementById('pendingContent').style.display = 'none';
+        document.getElementById('activeContent').style.display = 'block';
+
         document.getElementById('botUrl').href = data.url;
         document.getElementById('botUrl').textContent = data.url;
         document.getElementById('password').textContent = data.password || '—';
@@ -220,16 +284,12 @@
           if (pct >= 100) bar.classList.add('over');
           else if (pct >= 80) bar.classList.add('warn');
         }
-
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('content').style.display = 'block';
       } catch (err) {
         document.getElementById('loading').textContent = 'Ошибка загрузки: ' + err.message;
       }
     }
 
     loadDashboard();
-    // Refresh every 60s
     setInterval(loadDashboard, 60000);
   </script>
 </body>

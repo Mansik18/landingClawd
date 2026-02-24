@@ -20,7 +20,7 @@ db.pragma('journal_mode = WAL');
 const findUserByEmail = db.prepare('SELECT * FROM users WHERE email = ?');
 const findUserById = db.prepare('SELECT * FROM users WHERE id = ?');
 const updateBotToken = db.prepare(
-  'UPDATE users SET bot_token = ?, status = ? WHERE id = ?'
+  'UPDATE users SET bot_token = ? WHERE id = ?'
 );
 const updateUserActive = db.prepare(
   'UPDATE users SET status = ?, container_name = ? WHERE id = ?'
@@ -51,8 +51,9 @@ function authMiddleware(req, res, next) {
 }
 
 function statusRedirect(user) {
-  if (user.status === 'pending') return '/pending';
-  if (user.status === 'approved') return '/onboarding';
+  // No bot token yet → onboarding first (regardless of status)
+  if (!user.bot_token && user.status !== 'active') return '/onboarding';
+  // Has bot token or active → dashboard (shows pending or active state)
   return '/dashboard';
 }
 
@@ -99,21 +100,18 @@ app.get('/logout', (_req, res) => {
   res.redirect('/login');
 });
 
-// --- Pending ---
-app.get('/pending', authMiddleware, (req, res) => {
-  if (req.user.status !== 'pending') return res.redirect(statusRedirect(req.user));
-  res.sendFile(path.join(__dirname, 'cabinet', 'pending.html'));
-});
-
 // --- Onboarding ---
 app.get('/onboarding', authMiddleware, (req, res) => {
-  if (req.user.status !== 'approved') return res.redirect(statusRedirect(req.user));
+  // If already has bot token, go to dashboard
+  if (req.user.bot_token || req.user.status === 'active') {
+    return res.redirect('/dashboard');
+  }
   res.sendFile(path.join(__dirname, 'cabinet', 'onboarding.html'));
 });
 
 app.post('/onboarding', authMiddleware, async (req, res) => {
-  if (req.user.status !== 'approved') {
-    return res.status(400).json({ error: 'Недопустимый статус' });
+  if (req.user.bot_token || req.user.status === 'active') {
+    return res.status(400).json({ error: 'Онбординг уже пройден' });
   }
 
   const { botToken } = req.body;
@@ -122,55 +120,50 @@ app.post('/onboarding', authMiddleware, async (req, res) => {
   }
 
   const token = botToken.trim();
-  const username = req.user.email.split('@')[0].replace(/[^a-z0-9_-]/g, '').slice(0, 30);
-  if (username.length < 2) {
-    return res.status(400).json({ error: 'Не удалось создать имя пользователя из email' });
-  }
 
   try {
-    // Save bot token
-    updateBotToken.run(token, 'approved', req.user.id);
-
-    // Call admin API to provision container
-    const resp = await fetch(`${ADMIN_API_URL}/api/provision`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Internal-Key': INTERNAL_API_KEY,
-      },
-      body: JSON.stringify({ username, telegram_token: token }),
-    });
-
-    if (!resp.ok) {
-      const err = await resp.json().catch(() => ({}));
-      throw new Error(err.detail || err.error || `Provision failed: ${resp.status}`);
-    }
-
-    const data = await resp.json();
-
-    // Update user to active
-    updateUserActive.run('active', data.container_name || username, req.user.id);
-
+    // Just save the bot token — container will be created after admin approval
+    updateBotToken.run(token, req.user.id);
     res.json({ redirect: '/dashboard' });
   } catch (err) {
-    console.error('Provision error:', err);
-    res.status(500).json({ error: err.message || 'Ошибка создания контейнера' });
+    console.error('Save bot token error:', err);
+    res.status(500).json({ error: 'Ошибка сохранения токена' });
   }
 });
 
 // --- Dashboard ---
 app.get('/dashboard', authMiddleware, async (req, res) => {
-  if (req.user.status !== 'active') return res.redirect(statusRedirect(req.user));
+  // If no bot token yet, do onboarding first
+  if (!req.user.bot_token && req.user.status !== 'active') {
+    return res.redirect('/onboarding');
+  }
   res.sendFile(path.join(__dirname, 'cabinet', 'dashboard.html'));
 });
 
 // JSON API for dashboard data
 app.get('/api/me', authMiddleware, async (req, res) => {
   const user = findUserById.get(req.user.id);
-  if (!user || user.status !== 'active') {
-    return res.json({ status: user?.status || 'unknown' });
+  if (!user) return res.status(401).json({ error: 'User not found' });
+
+  // Pending: bot token saved, waiting for admin approval
+  if (user.status === 'pending') {
+    return res.json({
+      status: 'pending',
+      email: user.email,
+      firstName: user.first_name,
+    });
   }
 
+  // Approved but no container yet (shouldn't normally happen with new flow)
+  if (user.status === 'approved' && !user.container_name) {
+    return res.json({
+      status: 'approved',
+      email: user.email,
+      firstName: user.first_name,
+    });
+  }
+
+  // Active — get container info
   const containerName = user.container_name;
   let containerInfo = {};
 
