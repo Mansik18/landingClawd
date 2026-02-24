@@ -52,7 +52,6 @@ const translations = {
     "how.step2.time": "~45 сек",
     "how.step3.title": "Пользуйтесь",
     "how.step3.text": "OpenClaw работает. Обновления, бэкапы, мониторинг — всё на нас. Вы просто пользуетесь.",
-    "how.step3.time": "навсегда",
 
     // Features
     "feat.badge": "Всё что нужно",
@@ -104,11 +103,11 @@ const translations = {
 
     // Pricing
     "price.badge": "Старт",
-    "price.title": 'Бесплатно.<br><span class="gradient-text">Без подвохов.</span>',
-    "price.subtitle": "Полноценный OpenClaw на управляемом VPS. $0 навсегда. Без карты, без скрытых платежей.",
+    "price.title": "Бесплатно",
+    "price.subtitle": "Полноценный OpenClaw на управляемом VPS. Без карты и скрытых платежей.",
     "price.free.badge": "БЕСПЛАТНО",
     "price.free.name": "Free",
-    "price.free.credits": "$10 AI кредитов/мес включено",
+    "price.free.credits": "Бесплатный триал до 14 дней",
     "price.free.f1": "Управляемый VPS",
     "price.free.f2": "Веб-поиск",
     "price.free.f3": "Браузер-агент",
@@ -116,7 +115,6 @@ const translations = {
     "price.free.f5": "Ежедневные бэкапы",
     "price.free.f6": "Telegram / WhatsApp",
     "price.free.cta": "Начать бесплатно",
-    "price.note": "$1 = 1 AI кредит &middot; Платные тарифы скоро &middot; Early adopters получат бонусы",
 
     // Deploy Modal
     "deploy.title": "Развернуть OpenClaw",
@@ -236,7 +234,6 @@ const translations = {
     "how.step2.time": "~45 sec",
     "how.step3.title": "Start using it",
     "how.step3.text": "OpenClaw is running. Updates, backups, monitoring — all on us. You just use it.",
-    "how.step3.time": "forever",
 
     // Features
     "feat.badge": "Everything you need",
@@ -288,11 +285,11 @@ const translations = {
 
     // Pricing
     "price.badge": "Get started",
-    "price.title": 'Free.<br><span class="gradient-text">No catch.</span>',
-    "price.subtitle": "Full OpenClaw on a managed VPS. $0 forever. No card, no hidden fees.",
+    "price.title": "Free",
+    "price.subtitle": "Full OpenClaw on a managed VPS. No card required and no hidden fees.",
     "price.free.badge": "FREE",
     "price.free.name": "Free",
-    "price.free.credits": "$10 AI credits/month included",
+    "price.free.credits": "Free trial up to 14 days",
     "price.free.f1": "Managed VPS",
     "price.free.f2": "Web search",
     "price.free.f3": "Browser agent",
@@ -300,7 +297,6 @@ const translations = {
     "price.free.f5": "Daily backups",
     "price.free.f6": "Telegram / WhatsApp",
     "price.free.cta": "Start for free",
-    "price.note": "$1 = 1 AI credit &middot; Paid plans coming soon &middot; Early adopters get bonuses",
 
     // Deploy Modal
     "deploy.title": "Deploy OpenClaw",

@@ -23,6 +23,7 @@
     }
 
     if (Number.isInteger(ymId) && ymId > 0) {
+        const ymScriptUrl = 'https://mc.yandex.ru/metrika/tag.js?id=' + encodeURIComponent(String(ymId));
         (function (m, e, t, r, i, k, a) {
             m[i] = m[i] || function () {
                 (m[i].a = m[i].a || []).push(arguments);
@@ -38,14 +39,14 @@
             k.async = 1;
             k.src = r;
             a.parentNode.insertBefore(k, a);
-        })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js', 'ym');
+        })(window, document, 'script', ymScriptUrl, 'ym');
 
         window.ym(ymId, 'init', {
             ssr: true,
             clickmap: true,
             trackLinks: true,
             accurateTrackBounce: true,
-            webvisor: true,
+            webvisor: false,
             ecommerce: 'dataLayer',
             referrer: document.referrer,
             url: location.href

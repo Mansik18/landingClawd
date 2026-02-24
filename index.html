@@ -197,7 +197,6 @@
                     </div>
                     <h3 data-i18n="how.step3.title">Пользуйтесь</h3>
                     <p data-i18n="how.step3.text">OpenClaw работает. Обновления, бэкапы, мониторинг — всё на нас. Вы просто пользуетесь.</p>
-                    <div class="step-time" data-i18n="how.step3.time">навсегда</div>
                 </div>
             </div>
         </div>
@@ -405,8 +404,8 @@
     <section class="pricing" id="pricing">
         <div class="container">
             <span class="section-badge" data-i18n="price.badge">Старт</span>
-            <h2 class="section-title" data-i18n="price.title">Бесплатно.<br><span class="gradient-text">Без подвохов.</span></h2>
-            <p class="section-subtitle" data-i18n="price.subtitle">Полноценный OpenClaw на управляемом VPS. $0 навсегда. Без карты, без скрытых платежей.</p>
+            <h2 class="section-title" data-i18n="price.title">Бесплатно</h2>
+            <p class="section-subtitle" data-i18n="price.subtitle">Полноценный OpenClaw на управляемом VPS. Без карты и скрытых платежей.</p>
 
             <div class="pricing-free tilt-card">
                 <div class="pricing-free-badge" data-i18n="price.free.badge">БЕСПЛАТНО</div>
@@ -414,7 +413,7 @@
                     <div class="plan-info">
                         <h3 data-i18n="price.free.name">Free</h3>
                         <div class="plan-price">$0 <span>/мес</span></div>
-                        <p class="plan-credits" data-i18n="price.free.credits">$10 AI кредитов/мес включено</p>
+                        <p class="plan-credits" data-i18n="price.free.credits">Бесплатный триал до 14 дней</p>
                         <div class="plan-specs">
                             <span class="spec-tag">2GB RAM</span>
                             <span class="spec-tag">2 vCPU</span>
@@ -432,7 +431,6 @@
                     <a href="#" onclick="openDeployModal();return false" class="btn btn-primary btn-glow magnetic-btn" data-i18n="price.free.cta" data-track-source="pricing_card">Начать бесплатно</a>
                 </div>
             </div>
-            <p class="pricing-note" data-i18n="price.note">$1 = 1 AI кредит &middot; Платные тарифы скоро &middot; Early adopters получат бонусы</p>
         </div>
     </section>
 
@@ -456,24 +454,24 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="firstName" data-i18n="wl.firstName">Имя *</label>
-                        <input type="text" id="firstName" name="firstName" placeholder="Александр" data-i18n-ph="wl.firstName.ph" required>
+                        <input type="text" id="firstName" name="firstName" autocomplete="given-name" placeholder="Александр" data-i18n-ph="wl.firstName.ph" required>
                     </div>
                     <div class="form-group">
                         <label for="lastName" data-i18n="wl.lastName">Фамилия</label>
-                        <input type="text" id="lastName" name="lastName" placeholder="Иванов" data-i18n-ph="wl.lastName.ph">
+                        <input type="text" id="lastName" name="lastName" autocomplete="family-name" placeholder="Иванов" data-i18n-ph="wl.lastName.ph">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="email" data-i18n="wl.email">Email *</label>
-                    <input type="email" id="email" name="email" placeholder="alex@company.com" required>
+                    <input type="email" id="email" name="email" autocomplete="email" placeholder="alex@company.com" required>
                 </div>
                 <div class="form-group">
                     <label for="telegram" data-i18n="wl.telegram">Telegram</label>
-                    <input type="text" id="telegram" name="telegram" placeholder="@username">
+                    <input type="text" id="telegram" name="telegram" autocomplete="username" placeholder="@username">
                 </div>
                 <div class="form-group">
                     <label for="useCase" data-i18n="wl.useCase">Как будете использовать?</label>
-                    <select id="useCase" name="useCase">
+                    <select id="useCase" name="useCase" autocomplete="off">
                         <option value="" data-i18n="wl.useCase.select">Выберите...</option>
                         <option value="personal" data-i18n="wl.useCase.personal">Личные дела</option>
                         <option value="work" data-i18n="wl.useCase.work">Рабочие задачи</option>
