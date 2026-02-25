@@ -168,6 +168,7 @@ app.get('/api/me', apiAuthMiddleware, async (req, res) => {
     containerStatus: null,
     spend: 0,
     maxBudget: null,
+    botToken: user.bot_token || null,
   };
 
   // Active user with container — fetch live info
