@@ -117,24 +117,21 @@ const translations = {
     "price.free.cta": "Начать бесплатно",
 
     // Deploy Modal
-    "deploy.title": "Регистрация",
-    "deploy.notice": "Создайте аккаунт, чтобы получить доступ к платформе. После регистрации ваша заявка будет рассмотрена администратором.",
+    "deploy.title": "Занять место в очереди",
+    "deploy.notice": "Сейчас большая очередь — мы подключаем пользователей вручную. Оставьте контакты, и мы напишем вам, как только подготовим ваш инстанс.",
 
-    // Registration form
-    "nav.login": "Войти",
+    // Waitlist form
     "wl.firstName": "Имя *",
     "wl.firstName.ph": "Александр",
     "wl.lastName": "Фамилия",
     "wl.lastName.ph": "Иванов",
     "wl.email": "Email *",
     "wl.telegram": "Telegram",
-    "wl.password": "Пароль *",
-    "wl.password.ph": "Минимум 6 символов",
-    "wl.submit": "Зарегистрироваться",
-    "wl.note": "Уже есть аккаунт?",
-    "wl.login.link": "Войти",
-    "wl.success.title": "Регистрация завершена!",
-    "wl.success.text": "Ваша заявка отправлена на рассмотрение. Войдите в личный кабинет для отслеживания статуса.",
+    "wl.useCase": "Для чего хотите использовать?",
+    "wl.useCase.ph": "Например: автоматизация задач, Telegram-бот...",
+    "wl.submit": "Занять место",
+    "wl.success.title": "Вы в очереди!",
+    "wl.success.text": "Мы свяжемся с вами, как только подготовим ваш инстанс. Обычно это занимает 1–2 дня.",
     "wl.success.ok": "Понятно",
 
     // FAQ
@@ -296,24 +293,21 @@ const translations = {
     "price.free.cta": "Start for free",
 
     // Deploy Modal
-    "deploy.title": "Sign Up",
-    "deploy.notice": "Create an account to get access to the platform. After registration, your application will be reviewed by an administrator.",
+    "deploy.title": "Join the waitlist",
+    "deploy.notice": "There's a big queue right now — we're onboarding users manually. Leave your contacts and we'll reach out as soon as your instance is ready.",
 
-    // Registration form
-    "nav.login": "Log in",
+    // Waitlist form
     "wl.firstName": "First name *",
     "wl.firstName.ph": "John",
     "wl.lastName": "Last name",
     "wl.lastName.ph": "Doe",
     "wl.email": "Email *",
     "wl.telegram": "Telegram",
-    "wl.password": "Password *",
-    "wl.password.ph": "At least 6 characters",
-    "wl.submit": "Sign Up",
-    "wl.note": "Already have an account?",
-    "wl.login.link": "Log in",
-    "wl.success.title": "Registration complete!",
-    "wl.success.text": "Your application has been submitted for review. Log in to your cabinet to track your status.",
+    "wl.useCase": "What do you want to use it for?",
+    "wl.useCase.ph": "E.g.: task automation, Telegram bot...",
+    "wl.submit": "Join waitlist",
+    "wl.success.title": "You're on the list!",
+    "wl.success.text": "We'll reach out as soon as your instance is ready. Usually takes 1–2 days.",
     "wl.success.ok": "Got it",
 
     // FAQ

@@ -425,13 +425,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target === e.currentTarget) closeModal();
     });
 
-    // --- Registration Form ---
+    // --- Waitlist Form ---
     const waitlistForm = document.getElementById('waitlistForm');
 
     if (waitlistForm) {
         waitlistForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            trackEvent('register_submit_attempt');
+            trackEvent('waitlist_submit_attempt');
 
             const submitBtn = waitlistForm.querySelector('button[type="submit"]');
             const originalText = submitBtn.innerHTML;
@@ -443,11 +443,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 lastName: document.getElementById('lastName').value,
                 email: document.getElementById('email').value,
                 telegram: document.getElementById('telegram').value,
-                password: document.getElementById('regPassword').value,
+                useCase: document.getElementById('useCase')?.value || '',
             };
 
             try {
-                const res = await fetch('/api/register', {
+                const res = await fetch('/api/waitlist', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData),
@@ -459,16 +459,38 @@ document.addEventListener('DOMContentLoaded', () => {
                     throw new Error(data.error || translations[window.__currentLang || 'ru']['form.error']);
                 }
 
+                const lang = window.__currentLang || 'ru';
+                const t = translations[lang];
                 waitlistForm.reset();
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalText;
                 closeDeployModal();
-                trackEvent('register_submit_success');
-                window.location.href = 'https://my.opencloude.codecrafters.kz/login';
+                trackEvent('waitlist_submit_success', { position: data.position });
+
+                // Show success message
+                const successModal = document.createElement('div');
+                successModal.className = 'modal-overlay';
+                successModal.style.display = 'flex';
+                successModal.innerHTML = `
+                    <div class="modal-card deploy-modal-card" style="text-align:center;padding:2.5rem;">
+                        <div style="font-size:3rem;margin-bottom:1rem;">&#9989;</div>
+                        <h3 class="modal-title">${t['wl.success.title']}</h3>
+                        <p style="color:var(--text-secondary);margin:1rem 0;">${t['wl.success.text']}</p>
+                        ${data.position ? `<p style="color:var(--accent-violet);font-weight:600;font-size:1.1rem;margin-bottom:1rem;">#${data.position} в очереди</p>` : ''}
+                        <button class="btn btn-primary btn-glow" style="margin-top:0.5rem;">${t['wl.success.ok']}</button>
+                    </div>
+                `;
+                document.body.appendChild(successModal);
+                successModal.querySelector('button').addEventListener('click', () => {
+                    successModal.remove();
+                });
+                successModal.addEventListener('click', (ev) => {
+                    if (ev.target === successModal) successModal.remove();
+                });
             } catch (err) {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalText;
-                trackEvent('register_submit_error', { message: err.message });
+                trackEvent('waitlist_submit_error', { message: err.message });
                 alert(err.message);
             }
         });
