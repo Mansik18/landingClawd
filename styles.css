@@ -602,85 +602,133 @@ a {
     font-weight: 700;
 }
 
-/* Terminal Demo */
-.hero-terminal {
-    max-width: 600px;
-    margin: 0 auto;
+/* Chat Demo */
+.hero-chat {
+    max-width: 560px;
+    margin: 2.5rem auto 0;
+    border-radius: var(--radius-lg);
     background: rgba(0, 0, 0, 0.5);
     border: 1px solid var(--border-medium);
-    border-radius: var(--radius-lg);
     overflow: hidden;
     backdrop-filter: blur(10px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     opacity: 0;
     animation: fadeInUp 0.8s ease 0.85s forwards;
 }
 
-.terminal-header {
+.chat-header {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
+    gap: 0.75rem;
+    padding: 0.875rem 1.25rem;
     background: rgba(255, 255, 255, 0.03);
     border-bottom: 1px solid var(--border-subtle);
 }
 
-.terminal-dots {
-    display: flex;
-    gap: 6px;
-}
-
-.terminal-dots span {
-    width: 10px;
-    height: 10px;
+.chat-avatar {
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-}
-
-.terminal-dots span:nth-child(1) { background: #ff5f57; }
-.terminal-dots span:nth-child(2) { background: #febc2e; }
-.terminal-dots span:nth-child(3) { background: #28c840; }
-
-.terminal-title {
-    font-size: 12px;
-    color: var(--text-muted);
-    font-family: 'SF Mono', 'Fira Code', monospace;
-}
-
-.terminal-body {
-    padding: 20px;
-    font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace;
-    font-size: 14px;
-    min-height: 80px;
-}
-
-.terminal-line {
+    background: linear-gradient(135deg, var(--accent-violet), var(--accent-cyan));
     display: flex;
     align-items: center;
-    gap: 8px;
+    justify-content: center;
+    flex-shrink: 0;
 }
 
-.terminal-prompt {
-    color: var(--accent-emerald);
-    font-weight: 700;
+.chat-header-info {
+    display: flex;
+    flex-direction: column;
 }
 
-.terminal-command {
+.chat-header-name {
+    font-weight: 600;
+    font-size: 0.875rem;
     color: var(--text-primary);
 }
 
-.terminal-cursor {
-    color: var(--accent-cyan);
-    animation: blink 1s step-end infinite;
+.chat-header-status {
+    font-size: 0.7rem;
+    color: var(--accent-emerald);
+    font-weight: 500;
 }
 
-.terminal-output {
-    margin-top: 8px;
-    color: var(--text-secondary);
-    font-size: 13px;
-    line-height: 1.6;
+.chat-body {
+    padding: 1.5rem;
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
 }
 
-@keyframes blink {
-    50% { opacity: 0; }
+.chat-message {
+    display: flex;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.chat-message.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.chat-user {
+    justify-content: flex-end;
+}
+
+.chat-user .chat-bubble {
+    background: linear-gradient(135deg, var(--accent-violet), #818cf8);
+    color: #fff;
+    border-radius: 1rem 1rem 0.25rem 1rem;
+    padding: 0.75rem 1rem;
+    max-width: 85%;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+.chat-agent .chat-bubble {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-primary);
+    border-radius: 1rem 1rem 1rem 0.25rem;
+    padding: 0.75rem 1rem;
+    max-width: 85%;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+.chat-typing {
+    display: flex !important;
+    gap: 5px;
+    align-items: center;
+    padding: 0.75rem 1.25rem !important;
+}
+
+.chat-typing span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--text-muted);
+    animation: chatTyping 1.4s infinite;
+}
+
+.chat-typing span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.chat-typing span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes chatTyping {
+    0%, 60%, 100% {
+        opacity: 0.3;
+        transform: translateY(0);
+    }
+    30% {
+        opacity: 1;
+        transform: translateY(-4px);
+    }
 }
 
 /* --- Trust Marquee --- */
