@@ -421,16 +421,16 @@
             <div class="gs-step">
               <div class="gs-num">1</div>
               <div class="gs-body">
-                <h4>Напишите боту в Telegram</h4>
-                <p>Откройте Telegram и отправьте любое сообщение вашему боту.</p>
-                <a href="#" id="botTgLink" class="gs-link" target="_blank" style="display:none"></a>
+                <h4>Ваш бот доступен!</h4>
+                <p>Откройте <a href="https://t.me/BotFather" target="_blank" style="color:#a78bfa">@BotFather</a> в Telegram — там вы найдёте ссылку на вашего бота. Перейдите по ней и начните общение — отправьте любое сообщение. Бот работает на базе Claude и готов отвечать на ваши запросы.</p>
               </div>
             </div>
             <div class="gs-step">
               <div class="gs-num">2</div>
               <div class="gs-body">
-                <h4>Веб-панель управления</h4>
-                <p>Настраивайте промпты, инструменты и поведение бота.</p>
+                <h4>Панель управления ботом</h4>
+                <p>Помимо общения через Telegram, вы можете администрировать вашего бота через веб-панель управления: настраивать системный промпт, подключать инструменты и управлять поведением бота.</p>
+                <p style="margin-top:0.35rem">Панель доступна по ссылке ниже. Данные для входа:</p>
                 <div class="gs-creds">
                   <div class="gs-field">
                     <span class="gs-label">URL</span>
@@ -480,23 +480,6 @@
       sidebar.classList.remove('open');
       overlay.classList.remove('active');
     });
-
-    // ── Bot username cache ──
-    let cachedBotUsername = null;
-
-    async function resolveBotUsername(botToken) {
-      if (cachedBotUsername) return cachedBotUsername;
-      if (!botToken) return null;
-      try {
-        const r = await fetch(`https://api.telegram.org/bot${botToken}/getMe`);
-        const d = await r.json();
-        if (d.ok && d.result.username) {
-          cachedBotUsername = d.result.username;
-          return cachedBotUsername;
-        }
-      } catch {}
-      return null;
-    }
 
     // ── Dashboard loader ──
     async function loadDashboard() {
@@ -563,17 +546,6 @@
         const gsCard = document.getElementById('gettingStartedCard');
         if (isActive && data.url) {
           gsCard.style.display = 'block';
-
-          // Bot Telegram link
-          if (data.botToken) {
-            const username = await resolveBotUsername(data.botToken);
-            if (username) {
-              const link = document.getElementById('botTgLink');
-              link.href = `https://t.me/${username}`;
-              link.textContent = `@${username} в Telegram`;
-              link.style.display = 'inline-block';
-            }
-          }
 
           // Admin panel credentials
           document.getElementById('gsUrl').href = data.url;
