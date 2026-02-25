@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3002;
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-in-production';
 const INTERNAL_API_KEY = process.env.INTERNAL_API_KEY || 'dev-internal-key';
 const ADMIN_API_URL = process.env.ADMIN_API_URL || 'http://127.0.0.1:3000';
-const PLATFORM_DOMAIN = process.env.PLATFORM_DOMAIN || 'opencloude.codecrafters.kz';
+const PLATFORM_DOMAIN = process.env.PLATFORM_DOMAIN || 'clawdcloud.codecrafters.kz';
 
 // --- Database (shared with landing) ---
 const dbPath = process.env.DB_PATH || path.join(__dirname, 'clawd.db');
