@@ -206,6 +206,55 @@ app.get('/api/me', apiAuthMiddleware, async (req, res) => {
   res.json(result);
 });
 
+// --- Telegram pairing ---
+app.get('/api/pairing/pending', apiAuthMiddleware, async (req, res) => {
+  if (!req.user.container_name) {
+    return res.json({ exit_code: -1, output: 'No container' });
+  }
+  try {
+    const resp = await fetch(
+      `${ADMIN_API_URL}/api/containers/${req.user.container_name}/pairing/pending`,
+      { headers: { 'X-Internal-Key': INTERNAL_API_KEY } }
+    );
+    const data = await resp.json();
+    res.json(data);
+  } catch (err) {
+    console.error('Pairing pending error:', err);
+    res.status(500).json({ error: 'Failed to fetch pairing requests' });
+  }
+});
+
+app.post('/api/pairing/approve', apiAuthMiddleware, async (req, res) => {
+  if (!req.user.container_name) {
+    return res.status(400).json({ error: 'No container' });
+  }
+  const { code } = req.body;
+  if (!code || typeof code !== 'string' || code.length > 20) {
+    return res.status(400).json({ error: 'Invalid pairing code' });
+  }
+  try {
+    const resp = await fetch(
+      `${ADMIN_API_URL}/api/containers/${req.user.container_name}/pairing/approve`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Internal-Key': INTERNAL_API_KEY,
+        },
+        body: JSON.stringify({ code: code.trim() }),
+      }
+    );
+    const data = await resp.json();
+    if (!resp.ok) {
+      return res.status(resp.status).json(data);
+    }
+    res.json(data);
+  } catch (err) {
+    console.error('Pairing approve error:', err);
+    res.status(500).json({ error: 'Failed to approve pairing' });
+  }
+});
+
 // --- Static for cabinet pages ---
 app.use('/static', express.static(path.join(__dirname, 'cabinet', 'static')));
 

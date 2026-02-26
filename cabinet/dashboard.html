@@ -414,6 +414,28 @@
           </div>
         </div>
 
+        <!-- Telegram pairing (active only) -->
+        <div id="pairingCard" class="card" style="display:none">
+          <div class="card-title">Telegram доступ</div>
+          <p style="color:#94a3b8;font-size:0.82rem;margin-bottom:0.75rem;line-height:1.4">
+            Когда кто-то пишет вашему боту в Telegram, он получает код подтверждения.
+            Введите код ниже, чтобы разрешить доступ.
+          </p>
+          <div id="pendingList" style="margin-bottom:0.75rem"></div>
+          <form id="pairingForm" style="display:flex;gap:0.5rem;align-items:flex-end">
+            <div style="flex:1">
+              <label for="pairingCode" style="color:#64748b;font-size:0.75rem;margin:0 0 0.25rem">Код подтверждения</label>
+              <input type="text" id="pairingCode" placeholder="ABC12345" autocomplete="off" spellcheck="false"
+                style="width:100%;background:#0f1117;border:1px solid #2d3148;border-radius:0.35rem;color:#e2e8f0;padding:0.5rem 0.7rem;font-size:0.85rem;font-family:ui-monospace,monospace;outline:none">
+            </div>
+            <button type="submit" id="pairingBtn"
+              style="padding:0.5rem 1rem;background:#6d28d9;color:#fff;border:1px solid #7c3aed;border-radius:0.35rem;font-size:0.82rem;font-weight:600;cursor:pointer;white-space:nowrap;height:36px">
+              Подтвердить
+            </button>
+          </form>
+          <div id="pairingMsg" style="font-size:0.8rem;margin-top:0.5rem;display:none"></div>
+        </div>
+
         <!-- Getting Started (active only) -->
         <div id="gettingStartedCard" class="card card-gs" style="display:none">
           <div class="card-title">Начало работы</div>
@@ -421,12 +443,19 @@
             <div class="gs-step">
               <div class="gs-num">1</div>
               <div class="gs-body">
-                <h4>Ваш бот доступен!</h4>
-                <p>Откройте <a href="https://t.me/BotFather" target="_blank" style="color:#a78bfa">@BotFather</a> в Telegram — там вы найдёте ссылку на вашего бота. Перейдите по ней и начните общение — отправьте любое сообщение. Бот работает на базе Claude и готов отвечать на ваши запросы.</p>
+                <h4>Напишите боту в Telegram</h4>
+                <p>Откройте <a href="https://t.me/BotFather" target="_blank" style="color:#a78bfa">@BotFather</a> в Telegram — там вы найдёте ссылку на вашего бота. Перейдите по ней и отправьте любое сообщение.</p>
               </div>
             </div>
             <div class="gs-step">
               <div class="gs-num">2</div>
+              <div class="gs-body">
+                <h4>Подтвердите доступ</h4>
+                <p>Бот ответит кодом подтверждения. Введите его в карточке <strong>«Telegram доступ»</strong> выше — это защита от нежелательных сообщений. После подтверждения бот начнёт отвечать на ваши запросы.</p>
+              </div>
+            </div>
+            <div class="gs-step">
+              <div class="gs-num">3</div>
               <div class="gs-body">
                 <h4>Панель управления ботом</h4>
                 <p>Помимо общения через Telegram, вы можете администрировать вашего бота через веб-панель управления: настраивать системный промпт, подключать инструменты и управлять поведением бота.</p>
@@ -542,6 +571,15 @@
           bar.style.width = '0%';
         }
 
+        // Telegram pairing (active only)
+        const pairingCard = document.getElementById('pairingCard');
+        if (isActive && data.containerName) {
+          pairingCard.style.display = 'block';
+          loadPending();
+        } else {
+          pairingCard.style.display = 'none';
+        }
+
         // Getting Started (active only)
         const gsCard = document.getElementById('gettingStartedCard');
         if (isActive && data.url) {
@@ -564,6 +602,68 @@
         document.getElementById('loading').textContent = 'Ошибка загрузки: ' + err.message;
       }
     }
+
+    // ── Telegram pairing ──
+    async function loadPending() {
+      try {
+        const res = await fetch('/api/pairing/pending');
+        if (!res.ok) return;
+        const data = await res.json();
+        const list = document.getElementById('pendingList');
+        const output = (data.output || '').trim();
+        if (!output || output.toLowerCase().includes('no pending')) {
+          list.innerHTML = '<span style="color:#64748b;font-size:0.8rem">Нет ожидающих запросов</span>';
+          return;
+        }
+        // Parse lines — each pending request is a line
+        const lines = output.split('\n').filter(l => l.trim());
+        list.innerHTML = lines.map(line => {
+          // Try to extract code from the line
+          const codeMatch = line.match(/([A-Z0-9]{6,10})/);
+          const code = codeMatch ? codeMatch[1] : '';
+          return `<div style="display:flex;align-items:center;gap:0.5rem;padding:0.4rem 0.6rem;background:#0f1117;border:1px solid #2d3148;border-radius:0.3rem;margin-bottom:0.35rem">
+            <span style="flex:1;font-size:0.82rem;color:#e2e8f0;font-family:ui-monospace,monospace">${line.replace(/</g,'&lt;')}</span>
+            ${code ? `<button onclick="approveCode('${code}')" style="padding:0.25rem 0.6rem;background:#14532d;color:#86efac;border:1px solid #166534;border-radius:0.25rem;font-size:0.75rem;font-weight:600;cursor:pointer">Approve</button>` : ''}
+          </div>`;
+        }).join('');
+      } catch {}
+    }
+
+    async function approveCode(code) {
+      const msg = document.getElementById('pairingMsg');
+      msg.style.display = 'none';
+      try {
+        const res = await fetch('/api/pairing/approve', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code }),
+        });
+        const data = await res.json();
+        if (res.ok) {
+          msg.textContent = 'Доступ подтверждён!';
+          msg.style.color = '#86efac';
+          msg.style.display = 'block';
+          loadPending();
+        } else {
+          msg.textContent = data.detail || data.error || 'Ошибка';
+          msg.style.color = '#fca5a5';
+          msg.style.display = 'block';
+        }
+      } catch (err) {
+        msg.textContent = 'Ошибка сети: ' + err.message;
+        msg.style.color = '#fca5a5';
+        msg.style.display = 'block';
+      }
+    }
+
+    document.getElementById('pairingForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const input = document.getElementById('pairingCode');
+      const code = input.value.trim();
+      if (!code) return;
+      approveCode(code);
+      input.value = '';
+    });
 
     loadDashboard();
     setInterval(loadDashboard, 30000);
