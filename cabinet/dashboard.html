@@ -604,6 +604,31 @@
     }
 
     // ── Telegram pairing ──
+    function parsePairingTable(output) {
+      // Parse markdown-style table: | Code | telegramUserId | Meta | Requested |
+      const lines = output.split('\n').filter(l => l.trim());
+      // Find header row (contains "Code")
+      const headerIdx = lines.findIndex(l => /code/i.test(l) && l.includes('|'));
+      if (headerIdx < 0) return [];
+      // Data rows start after separator (---) line
+      const dataStart = headerIdx + 2;
+      const results = [];
+      for (let i = dataStart; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (!line || !line.includes('|')) continue;
+        const cells = line.split('|').map(c => c.trim()).filter(Boolean);
+        if (cells.length < 2) continue;
+        const code = cells[0] || '';
+        const userId = cells[1] || '';
+        let meta = {};
+        try { meta = JSON.parse(cells[2] || '{}'); } catch {}
+        const requested = cells[3] || '';
+        if (!code) continue;
+        results.push({ code, userId, meta, requested });
+      }
+      return results;
+    }
+
     async function loadPending() {
       try {
         const res = await fetch('/api/pairing/pending');
@@ -615,15 +640,27 @@
           list.innerHTML = '<span style="color:#64748b;font-size:0.8rem">Нет ожидающих запросов</span>';
           return;
         }
-        // Parse lines — each pending request is a line
-        const lines = output.split('\n').filter(l => l.trim());
-        list.innerHTML = lines.map(line => {
-          // Try to extract code from the line
-          const codeMatch = line.match(/([A-Z0-9]{6,10})/);
-          const code = codeMatch ? codeMatch[1] : '';
-          return `<div style="display:flex;align-items:center;gap:0.5rem;padding:0.4rem 0.6rem;background:#0f1117;border:1px solid #2d3148;border-radius:0.3rem;margin-bottom:0.35rem">
-            <span style="flex:1;font-size:0.82rem;color:#e2e8f0;font-family:ui-monospace,monospace">${line.replace(/</g,'&lt;')}</span>
-            ${code ? `<button onclick="approveCode('${code}')" style="padding:0.25rem 0.6rem;background:#14532d;color:#86efac;border:1px solid #166534;border-radius:0.25rem;font-size:0.75rem;font-weight:600;cursor:pointer">Approve</button>` : ''}
+        const requests = parsePairingTable(output);
+        if (requests.length === 0) {
+          list.innerHTML = '<span style="color:#64748b;font-size:0.8rem">Нет ожидающих запросов</span>';
+          return;
+        }
+        list.innerHTML = requests.map(r => {
+          const name = [r.meta.firstName, r.meta.lastName].filter(Boolean).join(' ') || '—';
+          const username = r.meta.username ? `@${r.meta.username}` : '';
+          const date = r.requested ? new Date(r.requested).toLocaleString('ru-RU', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' }) : '';
+          return `<div style="display:flex;align-items:center;gap:0.75rem;padding:0.55rem 0.75rem;background:#0f1117;border:1px solid #2d3148;border-radius:0.35rem;margin-bottom:0.4rem">
+            <div style="flex:1;min-width:0">
+              <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap">
+                <span style="font-size:0.85rem;font-weight:600;color:#e2e8f0">${name.replace(/</g,'&lt;')}</span>
+                ${username ? `<span style="font-size:0.78rem;color:#a78bfa">${username.replace(/</g,'&lt;')}</span>` : ''}
+              </div>
+              <div style="display:flex;align-items:center;gap:0.75rem;margin-top:0.2rem">
+                <span style="font-size:0.75rem;color:#64748b;font-family:ui-monospace,monospace">${r.code}</span>
+                ${date ? `<span style="font-size:0.72rem;color:#475569">${date}</span>` : ''}
+              </div>
+            </div>
+            <button onclick="approveCode('${r.code}')" style="padding:0.3rem 0.75rem;background:#14532d;color:#86efac;border:1px solid #166534;border-radius:0.3rem;font-size:0.78rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:opacity 0.15s" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">Подтвердить</button>
           </div>`;
         }).join('');
       } catch {}
