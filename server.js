@@ -2,11 +2,29 @@ const express = require('express');
 const Database = require('better-sqlite3');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const rateLimit = require('express-rate-limit');
 const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-in-production';
+
+// --- Rate limiting ---
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 15, // 15 attempts per window
+  message: { error: 'Слишком много попыток. Попробуйте через 15 минут.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const registerLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 5, // 5 registrations per hour per IP
+  message: { error: 'Слишком много регистраций. Попробуйте позже.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 // --- Database setup ---
 const db = new Database(path.join(__dirname, 'clawd.db'));
@@ -61,7 +79,7 @@ app.use(express.static(__dirname, { index: 'index.html' }));
 // --- API Routes ---
 
 // Register new user
-app.post('/api/register', (req, res) => {
+app.post('/api/register', registerLimiter, (req, res) => {
   const { firstName, lastName, email, password, telegram } = req.body;
 
   if (!firstName || !email || !password) {
@@ -73,8 +91,11 @@ app.post('/api/register', (req, res) => {
     return res.status(400).json({ error: 'Некорректный email' });
   }
 
-  if (password.length < 6) {
-    return res.status(400).json({ error: 'Пароль должен быть не менее 6 символов' });
+  if (password.length < 8) {
+    return res.status(400).json({ error: 'Пароль должен быть не менее 8 символов' });
+  }
+  if (!/[a-zA-Z]/.test(password) || !/[0-9]/.test(password)) {
+    return res.status(400).json({ error: 'Пароль должен содержать буквы и цифры' });
   }
 
   try {
@@ -97,7 +118,7 @@ app.post('/api/register', (req, res) => {
 });
 
 // Login
-app.post('/api/login', (req, res) => {
+app.post('/api/login', authLimiter, (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -158,7 +179,7 @@ app.get('/api/waitlist/count', (_req, res) => {
 // View all entries (simple admin)
 app.get('/api/waitlist', (req, res) => {
   const token = req.query.token;
-  if (token !== process.env.ADMIN_TOKEN && token !== 'clawd-admin-2026') {
+  if (!process.env.ADMIN_TOKEN || token !== process.env.ADMIN_TOKEN) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
   const entries = allWaitlist.all();

@@ -3,6 +3,7 @@ const Database = require('better-sqlite3');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
+const rateLimit = require('express-rate-limit');
 const path = require('path');
 
 const app = express();
@@ -11,6 +12,15 @@ const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-in-production';
 const INTERNAL_API_KEY = process.env.INTERNAL_API_KEY || 'dev-internal-key';
 const ADMIN_API_URL = process.env.ADMIN_API_URL || 'http://127.0.0.1:3000';
 const PLATFORM_DOMAIN = process.env.PLATFORM_DOMAIN || 'clawdcloud.codecrafters.kz';
+
+// --- Rate limiting ---
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 15, // 15 attempts per window
+  message: { error: 'Слишком много попыток входа. Попробуйте через 15 минут.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 // --- Database (shared with landing) ---
 const dbPath = process.env.DB_PATH || path.join(__dirname, 'clawd.db');
@@ -80,7 +90,7 @@ app.get('/login', (_req, res) => {
   res.sendFile(path.join(__dirname, 'cabinet', 'login.html'));
 });
 
-app.post('/login', (req, res) => {
+app.post('/login', loginLimiter, (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -98,8 +108,8 @@ app.post('/login', (req, res) => {
 
   res.cookie('cabinet_token', token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
+    secure: true,
+    sameSite: 'strict',
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 
