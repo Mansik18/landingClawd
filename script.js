@@ -179,63 +179,62 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- Chat Demo Animation ---
-    function getChatMessages() {
+    // --- Terminal Typing Effect ---
+    function getCommands() {
         const t = translations[window.__currentLang || 'ru'];
         return [
-            { user: t['chat.user1'], agent: t['chat.agent1'] },
-            { user: t['chat.user2'], agent: t['chat.agent2'] },
-            { user: t['chat.user3'], agent: t['chat.agent3'] },
-            { user: t['chat.user4'], agent: t['chat.agent4'] },
-            { user: t['chat.user5'], agent: t['chat.agent5'] },
+            { cmd: t['terminal.cmd1'], output: t['terminal.out1'] },
+            { cmd: t['terminal.cmd2'], output: t['terminal.out2'] },
+            { cmd: t['terminal.cmd3'], output: t['terminal.out3'] },
+            { cmd: t['terminal.cmd4'], output: t['terminal.out4'] },
+            { cmd: t['terminal.cmd5'], output: t['terminal.out5'] },
         ];
     }
 
-    const chatUserBubble = document.getElementById('chatUserBubble');
-    const chatAgentBubble = document.getElementById('chatAgentBubble');
-    const chatUserMsg = document.getElementById('chatUserMsg');
-    const chatAgentMsg = document.getElementById('chatAgentMsg');
-    let chatIndex = 0;
+    const terminalCommand = document.getElementById('terminalCommand');
+    const terminalOutput = document.getElementById('terminalOutput');
+    let cmdIndex = 0;
 
-    function showChatConversation() {
-        const messages = getChatMessages();
-        const { user, agent } = messages[chatIndex];
+    function typeCommand(text, callback) {
+        let i = 0;
+        terminalCommand.textContent = '';
+        terminalOutput.textContent = '';
 
-        // Reset
-        chatUserMsg.style.opacity = '0';
-        chatUserMsg.style.transform = 'translateY(10px)';
-        chatAgentMsg.style.opacity = '0';
-        chatAgentMsg.style.transform = 'translateY(10px)';
-
-        // Show user message
-        chatUserBubble.textContent = user;
-        setTimeout(() => {
-            chatUserMsg.style.transition = 'opacity 0.3s, transform 0.3s';
-            chatUserMsg.style.opacity = '1';
-            chatUserMsg.style.transform = 'translateY(0)';
-        }, 300);
-
-        // Show typing dots, then agent response
-        setTimeout(() => {
-            chatAgentBubble.innerHTML = '<span class="chat-typing"><span></span><span></span><span></span></span>';
-            chatAgentMsg.style.transition = 'opacity 0.3s, transform 0.3s';
-            chatAgentMsg.style.opacity = '1';
-            chatAgentMsg.style.transform = 'translateY(0)';
-        }, 800);
-
-        setTimeout(() => {
-            chatAgentBubble.textContent = agent;
-        }, 2300);
-
-        // Loop to next
-        setTimeout(() => {
-            chatIndex = (chatIndex + 1) % messages.length;
-            showChatConversation();
-        }, 5800);
+        function type() {
+            if (i < text.length) {
+                terminalCommand.textContent += text[i];
+                i++;
+                setTimeout(type, 30 + Math.random() * 40);
+            } else {
+                setTimeout(callback, 500);
+            }
+        }
+        type();
     }
 
-    if (chatUserBubble) {
-        setTimeout(showChatConversation, 1500);
+    function showOutput(text, callback) {
+        terminalOutput.style.opacity = '0';
+        terminalOutput.textContent = text;
+        setTimeout(() => {
+            terminalOutput.style.transition = 'opacity 0.3s';
+            terminalOutput.style.opacity = '1';
+            setTimeout(callback, 3000);
+        }, 100);
+    }
+
+    function runTerminalLoop() {
+        const cmds = getCommands();
+        const { cmd, output } = cmds[cmdIndex];
+        typeCommand(cmd, () => {
+            showOutput(output, () => {
+                cmdIndex = (cmdIndex + 1) % cmds.length;
+                runTerminalLoop();
+            });
+        });
+    }
+
+    if (terminalCommand) {
+        setTimeout(runTerminalLoop, 1500);
     }
 
     // --- Animated Counters ---
@@ -426,13 +425,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target === e.currentTarget) closeModal();
     });
 
-    // --- Waitlist Form ---
+    // --- Registration Form ---
     const waitlistForm = document.getElementById('waitlistForm');
 
     if (waitlistForm) {
         waitlistForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            trackEvent('waitlist_submit_attempt');
+            trackEvent('register_submit_attempt');
 
             const submitBtn = waitlistForm.querySelector('button[type="submit"]');
             const originalText = submitBtn.innerHTML;
@@ -444,11 +443,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 lastName: document.getElementById('lastName').value,
                 email: document.getElementById('email').value,
                 telegram: document.getElementById('telegram').value,
-                useCase: document.getElementById('useCase')?.value || '',
+                password: document.getElementById('regPassword').value,
             };
 
             try {
-                const res = await fetch('/api/waitlist', {
+                const res = await fetch('/api/register', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData),
@@ -460,38 +459,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     throw new Error(data.error || translations[window.__currentLang || 'ru']['form.error']);
                 }
 
-                const lang = window.__currentLang || 'ru';
-                const t = translations[lang];
                 waitlistForm.reset();
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalText;
                 closeDeployModal();
-                trackEvent('waitlist_submit_success', { position: data.position });
-
-                // Show success message
-                const successModal = document.createElement('div');
-                successModal.className = 'modal-overlay';
-                successModal.style.display = 'flex';
-                successModal.innerHTML = `
-                    <div class="modal-card deploy-modal-card" style="text-align:center;padding:2.5rem;">
-                        <div style="font-size:3rem;margin-bottom:1rem;">&#9989;</div>
-                        <h3 class="modal-title">${t['wl.success.title']}</h3>
-                        <p style="color:var(--text-secondary);margin:1rem 0;">${t['wl.success.text']}</p>
-                        ${data.position ? `<p style="color:var(--accent-violet);font-weight:600;font-size:1.1rem;margin-bottom:1rem;">#${data.position} в очереди</p>` : ''}
-                        <button class="btn btn-primary btn-glow" style="margin-top:0.5rem;">${t['wl.success.ok']}</button>
-                    </div>
-                `;
-                document.body.appendChild(successModal);
-                successModal.querySelector('button').addEventListener('click', () => {
-                    successModal.remove();
-                });
-                successModal.addEventListener('click', (ev) => {
-                    if (ev.target === successModal) successModal.remove();
-                });
+                showSuccessModal();
+                trackEvent('register_submit_success');
             } catch (err) {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalText;
-                trackEvent('waitlist_submit_error', { message: err.message });
+                trackEvent('register_submit_error', { message: err.message });
                 alert(err.message);
             }
         });

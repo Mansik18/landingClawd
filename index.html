@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ClawdCloud — наймите AI, увольте рутину</title>
-    <meta name="description" content="AI-агент, который сам заходит на сайты, ищет информацию, собирает отчёты и присылает результат в Telegram. Работает 24/7.">
+    <title>ClawdCloud — Разверни OpenClaw в два клика</title>
+    <meta name="description" content="Платформа для деплоя OpenClaw без геморроя. Никаких серверов, установки и настройки — просто разверни и пользуйся. Два клика, 60 секунд.">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,8 +34,8 @@
         <div class="announcement-inner">
             <span class="announcement-pulse"></span>
             <span class="announcement-live">LIVE</span>
-            <span data-i18n="ann.text">AI, который не болтает — работает.</span>
-            <a href="#" onclick="openDeployModal();return false" data-i18n="ann.cta" data-track-source="announcement_bar">Попробовать бесплатно &rarr;</a>
+            <span data-i18n="ann.text">Открыт ранний доступ к ClawdCloud —</span>
+            <a href="#" onclick="openDeployModal();return false" data-i18n="ann.cta" data-track-source="announcement_bar">Развернуть OpenClaw &rarr;</a>
         </div>
     </div>
 
@@ -54,8 +54,9 @@
             </div>
             <div class="nav-actions">
                 <button class="lang-toggle" id="langToggle" onclick="toggleLanguage()">EN</button>
+                <a href="https://my.clawdcloud.codecrafters.kz/login" class="btn btn-outline" data-i18n="nav.login">Войти</a>
                 <a href="#" onclick="openDeployModal();return false" class="btn btn-primary btn-glow" data-track-source="navbar">
-                    <span data-i18n="nav.cta">Попробовать</span>
+                    <span data-i18n="nav.cta">Регистрация</span>
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </a>
             </div>
@@ -71,7 +72,7 @@
         <a href="#use-cases" data-i18n="nav.cases">Кейсы</a>
         <a href="#pricing" data-i18n="nav.pricing">Тарифы</a>
         <a href="#faq" data-i18n="nav.faq">FAQ</a>
-        <a href="#" onclick="document.getElementById('mobileMenu').classList.remove('active');document.getElementById('mobileMenuBtn').classList.remove('active');openDeployModal();return false" class="btn btn-primary btn-glow" style="text-align:center;margin-top:8px;" data-i18n="nav.cta" data-track-source="mobile_menu">Попробовать</a>
+        <a href="#" onclick="document.getElementById('mobileMenu').classList.remove('active');document.getElementById('mobileMenuBtn').classList.remove('active');openDeployModal();return false" class="btn btn-primary btn-glow" style="text-align:center;margin-top:8px;" data-i18n="nav.cta" data-track-source="mobile_menu">Развернуть</a>
     </div>
 
     <!-- Hero Section -->
@@ -83,43 +84,41 @@
         <div class="container">
             <div class="hero-badge" data-i18n="hero.badge">
                 <span class="hero-badge-dot"></span>
-                Уже <strong>847+</strong> человек делегировали рутину
+                Уже <strong>847+</strong> развернули OpenClaw
             </div>
             <h1 class="hero-title">
-                <span class="hero-line" data-i18n="hero.title1">Наймите AI.</span>
-                <span class="hero-line" data-i18n="hero.title2"><span class="gradient-text">Увольте рутину.</span></span>
+                <span class="hero-line" data-i18n="hero.title1">Разверни OpenClaw</span>
+                <span class="hero-line" data-i18n="hero.title2"><span class="gradient-text">в два клика</span></span>
             </h1>
             <p class="hero-subtitle" data-i18n="hero.subtitle">
-                Не чат-бот. Агент, который сам заходит на сайты, ищет информацию, собирает отчёты — и присылает результат в Telegram. <strong>Работает 24/7, пока вы живёте.</strong>
+                Никаких серверов, установки и танцев с бубном.
+                ClawdCloud — платформа, которая разворачивает OpenClaw за вас. <strong>Два клика. 60 секунд. Работает.</strong>
             </p>
             <div class="hero-buttons">
                 <a href="#" onclick="openDeployModal();return false" class="btn btn-primary btn-lg btn-glow magnetic-btn" data-track-source="hero_primary">
-                    <span data-i18n="hero.cta1">Попробовать бесплатно</span>
+                    <span data-i18n="hero.cta1">Развернуть OpenClaw</span>
                     <svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </a>
                 <a href="#features" class="btn btn-glass btn-lg magnetic-btn" data-i18n="hero.cta2">
-                    Как это работает?
+                    Что внутри?
                 </a>
             </div>
 
-            <!-- Chat Demo -->
-            <div class="hero-chat">
-                <div class="chat-header">
-                    <div class="chat-avatar">
-                        <svg width="20" height="20" viewBox="0 0 32 32" fill="none"><defs><linearGradient id="lgc" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#06b6d4"/></linearGradient></defs><path d="M22.5 13.2a5.5 5.5 0 00-10.6-1.5A4 4 0 008 15.5a4 4 0 004 4h9.5a3.5 3.5 0 001-6.3z" fill="url(#lgc)"/><path d="M17 12.5l-3 4.5h2.5L15.5 21l4-5h-2.5z" fill="#fff"/></svg>
+            <!-- Animated Terminal -->
+            <div class="hero-terminal">
+                <div class="terminal-header">
+                    <div class="terminal-dots">
+                        <span></span><span></span><span></span>
                     </div>
-                    <div class="chat-header-info">
-                        <span class="chat-header-name">ClawdCloud</span>
-                        <span class="chat-header-status">online</span>
-                    </div>
+                    <span class="terminal-title">clawdcloud</span>
                 </div>
-                <div class="chat-body" id="chatBody">
-                    <div class="chat-message chat-user" id="chatUserMsg">
-                        <div class="chat-bubble" id="chatUserBubble"></div>
+                <div class="terminal-body">
+                    <div class="terminal-line">
+                        <span class="terminal-prompt">$</span>
+                        <span class="terminal-command" id="terminalCommand"></span>
+                        <span class="terminal-cursor">|</span>
                     </div>
-                    <div class="chat-message chat-agent" id="chatAgentMsg">
-                        <div class="chat-bubble" id="chatAgentBubble"></div>
-                    </div>
+                    <div class="terminal-output" id="terminalOutput"></div>
                 </div>
             </div>
         </div>
@@ -129,33 +128,33 @@
     <div class="trust-marquee">
         <div class="marquee-track">
             <div class="marquee-content">
-                <span class="marquee-item" data-i18n="marquee.1">Работает 24/7</span>
+                <span class="marquee-item" data-i18n="marquee.1">Деплой за 60 секунд</span>
                 <span class="marquee-separator">&diams;</span>
-                <span class="marquee-item" data-i18n="marquee.2">Пишет в Telegram</span>
+                <span class="marquee-item" data-i18n="marquee.2">Без установки</span>
                 <span class="marquee-separator">&diams;</span>
-                <span class="marquee-item" data-i18n="marquee.3">Ищет в интернете</span>
+                <span class="marquee-item" data-i18n="marquee.3">Без настройки серверов</span>
                 <span class="marquee-separator">&diams;</span>
-                <span class="marquee-item" data-i18n="marquee.4">Работает с файлами</span>
+                <span class="marquee-item" data-i18n="marquee.4">Управляемый VPS</span>
                 <span class="marquee-separator">&diams;</span>
-                <span class="marquee-item" data-i18n="marquee.5">Заполняет формы</span>
+                <span class="marquee-item" data-i18n="marquee.5">Авто-обновления</span>
                 <span class="marquee-separator">&diams;</span>
-                <span class="marquee-item" data-i18n="marquee.6">Отправляет отчёты</span>
+                <span class="marquee-item" data-i18n="marquee.6">Бэкапы из коробки</span>
                 <span class="marquee-separator">&diams;</span>
-                <span class="marquee-item" data-i18n="marquee.7">Подключён к сервисам</span>
+                <span class="marquee-item" data-i18n="marquee.7">OpenClaw полная версия</span>
                 <span class="marquee-separator">&diams;</span>
-                <span class="marquee-item" data-i18n="marquee.1">Работает 24/7</span>
+                <span class="marquee-item" data-i18n="marquee.1">Деплой за 60 секунд</span>
                 <span class="marquee-separator">&diams;</span>
-                <span class="marquee-item" data-i18n="marquee.2">Пишет в Telegram</span>
+                <span class="marquee-item" data-i18n="marquee.2">Без установки</span>
                 <span class="marquee-separator">&diams;</span>
-                <span class="marquee-item" data-i18n="marquee.3">Ищет в интернете</span>
+                <span class="marquee-item" data-i18n="marquee.3">Без настройки серверов</span>
                 <span class="marquee-separator">&diams;</span>
-                <span class="marquee-item" data-i18n="marquee.4">Работает с файлами</span>
+                <span class="marquee-item" data-i18n="marquee.4">Управляемый VPS</span>
                 <span class="marquee-separator">&diams;</span>
-                <span class="marquee-item" data-i18n="marquee.5">Заполняет формы</span>
+                <span class="marquee-item" data-i18n="marquee.5">Авто-обновления</span>
                 <span class="marquee-separator">&diams;</span>
-                <span class="marquee-item" data-i18n="marquee.6">Отправляет отчёты</span>
+                <span class="marquee-item" data-i18n="marquee.6">Бэкапы из коробки</span>
                 <span class="marquee-separator">&diams;</span>
-                <span class="marquee-item" data-i18n="marquee.7">Подключён к сервисам</span>
+                <span class="marquee-item" data-i18n="marquee.7">OpenClaw полная версия</span>
                 <span class="marquee-separator">&diams;</span>
             </div>
         </div>
@@ -165,8 +164,8 @@
     <section class="how-it-works" id="how-it-works">
         <div class="container">
             <span class="section-badge" data-i18n="how.badge">Как это работает</span>
-            <h2 class="section-title" data-i18n="how.title">Три шага — и у вас<br><span class="gradient-text">личный ИИ-ассистент</span></h2>
-            <p class="section-subtitle" data-i18n="how.subtitle">Никаких настроек, установок или технических знаний. Проще, чем заказать такси.</p>
+            <h2 class="section-title" data-i18n="how.title">Два клика — и OpenClaw<br><span class="gradient-text">уже работает</span></h2>
+            <p class="section-subtitle" data-i18n="how.subtitle">Без SSH, без Docker, без конфигов. Мы убрали весь геморрой между вами и рабочим OpenClaw.</p>
             <div class="steps-grid">
                 <div class="step-card tilt-card">
                     <div class="step-number-bg">01</div>
@@ -185,8 +184,8 @@
                     <div class="step-icon-wrap">
                         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
                     </div>
-                    <h3 data-i18n="how.step2.title">Напишите задачу</h3>
-                    <p data-i18n="how.step2.text">В Telegram, WhatsApp или на сайте. Обычным языком, как другу.</p>
+                    <h3 data-i18n="how.step2.title">Нажмите «Развернуть»</h3>
+                    <p data-i18n="how.step2.text">Выберите тариф, нажмите кнопку — ClawdCloud разворачивает OpenClaw на управляемом VPS.</p>
                     <div class="step-time" data-i18n="how.step2.time">~45 сек</div>
                 </div>
                 <div class="step-connector">
@@ -198,7 +197,7 @@
                         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
                     </div>
                     <h3 data-i18n="how.step3.title">Пользуйтесь</h3>
-                    <p data-i18n="how.step3.text">Агент сам разберётся, найдёт информацию, выполнит задачу и пришлёт результат.</p>
+                    <p data-i18n="how.step3.text">OpenClaw работает. Обновления, бэкапы, мониторинг — всё на нас. Вы просто пользуетесь.</p>
                 </div>
             </div>
         </div>
@@ -208,8 +207,8 @@
     <section class="features" id="features">
         <div class="container">
             <span class="section-badge" data-i18n="feat.badge">Всё что нужно</span>
-            <h2 class="section-title" data-i18n="feat.title">Не ассистент.<br><span class="gradient-text">Исполнитель.</span></h2>
-            <p class="section-subtitle" data-i18n="feat.subtitle">Разница — как между советом и результатом. Он не подсказывает, что делать. Он делает.</p>
+            <h2 class="section-title" data-i18n="feat.title">Готовый OpenClaw.<br><span class="gradient-text">Ноль настроек.</span></h2>
+            <p class="section-subtitle" data-i18n="feat.subtitle">Не хостинг, а полноценная среда. Запустили — работает. Точка.</p>
             <div class="bento-grid">
                 <div class="bento-card bento-wide tilt-card">
                     <div class="bento-card-content">
@@ -239,13 +238,13 @@
                     <div class="bento-card-content">
                         <div class="feature-tag tag-green" data-i18n="feat.tag.savings">Выгода</div>
                         <h3 data-i18n="feat.savings.title">AI расходы <span class="gradient-text">в 2x меньше</span></h3>
-                        <p data-i18n="feat.savings.text">Личный помощник стоит от $1 000/мес. AI-агент делает то же самое за долю стоимости. И работает 24/7 без выходных.</p>
+                        <p data-i18n="feat.savings.text">Оптимизация контекста, кэширование и умная маршрутизация. Вы получаете тот же результат, но платите вдвое меньше, чем при self-host.</p>
                     </div>
                     <div class="bento-visual">
                         <div class="savings-chart">
                             <div class="chart-bar">
                                 <div class="bar-fill bar-them" style="height:85%">
-                                    <span data-i18n="feat.chart.bar1">Ассистент</span>
+                                    <span>Self-Host</span>
                                 </div>
                             </div>
                             <div class="chart-bar">
@@ -274,7 +273,7 @@
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                     </div>
                     <h3 data-i18n="feat.search.title">Встроенный веб-поиск</h3>
-                    <p data-i18n="feat.search.text">Находит информацию, сравнивает цены, мониторит сайты — сам, без вашего участия.</p>
+                    <p data-i18n="feat.search.text">OpenClaw ищет в интернете из коробки. Никаких дополнительных ключей — подключено и работает.</p>
                 </div>
                 <div class="bento-card bento-small tilt-card">
                     <div class="bento-icon">
@@ -288,7 +287,7 @@
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M20.95 11A10 10 0 0 0 13 2.05"/></svg>
                     </div>
                     <h3 data-i18n="feat.updates.title">Обновления на автомате</h3>
-                    <p data-i18n="feat.updates.text">Мы постоянно улучшаем агента. Новые возможности появляются автоматически — вам ничего не нужно делать.</p>
+                    <p data-i18n="feat.updates.text">Вышел новый OpenClaw? Он уже у вас. Мы обновляем всё автоматически, без простоев.</p>
                 </div>
             </div>
         </div>
@@ -298,7 +297,7 @@
     <section class="integrations">
         <div class="container">
             <h2 class="section-title" data-i18n="int.title">Все интеграции <span class="gradient-text">из коробки</span></h2>
-            <p class="section-subtitle" data-i18n="int.subtitle">Telegram, WhatsApp, Google Sheets, Gmail и десятки других — уже подключены.</p>
+            <p class="section-subtitle" data-i18n="int.subtitle">OpenClaw на ClawdCloud уже подключен к сотням сервисов. Никакой ручной настройки.</p>
         </div>
         <div class="integration-marquee">
             <div class="marquee-track marquee-slow">
@@ -330,7 +329,7 @@
         <div class="container">
             <span class="section-badge" data-i18n="cases.badge">Примеры</span>
             <h2 class="section-title" data-i18n="cases.title">Одно сообщение —<br><span class="gradient-text">готовый результат.</span></h2>
-            <p class="section-subtitle" data-i18n="cases.subtitle">Просто напишите что нужно. Агент разберётся сам — найдёт, сделает, отчитается.</p>
+            <p class="section-subtitle" data-i18n="cases.subtitle">Напишите OpenClaw что нужно. Он разберётся сам — найдёт, сделает, отчитается.</p>
             <div class="prompt-grid">
                 <div class="prompt-card tilt-card">
                     <div class="prompt-category">
@@ -357,7 +356,7 @@
                 <div class="prompt-card tilt-card">
                     <div class="prompt-category">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-                        <span data-i18n="cases.cat.dev">Покупки</span>
+                        <span data-i18n="cases.cat.dev">Разработка</span>
                     </div>
                     <p class="prompt-text" data-i18n="cases.prompt3">"Проверь последний PR на баги, напиши ревью и алертни в Slack если что-то критичное."</p>
                     <div class="prompt-result">
@@ -390,12 +389,12 @@
                 <div class="prompt-card tilt-card">
                     <div class="prompt-category">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-                        <span data-i18n="cases.cat.monitoring">Рутина</span>
+                        <span data-i18n="cases.cat.monitoring">Мониторинг</span>
                     </div>
                     <p class="prompt-text" data-i18n="cases.prompt6">"Следи за сайтом 24/7. Если упадёт — перезапусти и напиши мне в Telegram."</p>
                     <div class="prompt-result">
                         <span class="result-dot"></span>
-                        <span data-i18n="cases.result6">Автоматическая рассылка настроена</span>
+                        <span data-i18n="cases.result6">Мониторинг активен, uptime 99.9%</span>
                     </div>
                 </div>
             </div>
@@ -407,7 +406,7 @@
         <div class="container">
             <span class="section-badge" data-i18n="price.badge">Старт</span>
             <h2 class="section-title" data-i18n="price.title">Бесплатно</h2>
-            <p class="section-subtitle" data-i18n="price.subtitle">Полноценный AI-агент. Без карты и скрытых платежей.</p>
+            <p class="section-subtitle" data-i18n="price.subtitle">Полноценный OpenClaw на управляемом VPS. Без карты и скрытых платежей.</p>
 
             <div class="pricing-free tilt-card">
                 <div class="pricing-free-badge" data-i18n="price.free.badge">БЕСПЛАТНО</div>
@@ -416,9 +415,13 @@
                         <h3 data-i18n="price.free.name">Free</h3>
                         <div class="plan-price">$0 <span>/мес</span></div>
                         <p class="plan-credits" data-i18n="price.free.credits">Бесплатный триал до 14 дней</p>
-                        <!-- No tech specs for consumer positioning -->
+                        <div class="plan-specs">
+                            <span class="spec-tag">2GB RAM</span>
+                            <span class="spec-tag">2 vCPU</span>
+                            <span class="spec-tag">20GB Диск</span>
+                        </div>
                         <ul class="plan-features" style="margin-top:1rem;list-style:none;padding:0;">
-                            <li class="included" data-i18n="price.free.f1">Работает 24/7</li>
+                            <li class="included" data-i18n="price.free.f1">Управляемый VPS</li>
                             <li class="included" data-i18n="price.free.f2">Веб-поиск</li>
                             <li class="included" data-i18n="price.free.f3">Браузер-агент</li>
                             <li class="included" data-i18n="price.free.f4">Авто-обновления</li>
@@ -440,13 +443,13 @@
                 <div class="deploy-modal-icon">
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
                 </div>
-                <h3 class="modal-title" data-i18n="deploy.title">Занять место в очереди</h3>
+                <h3 class="modal-title" data-i18n="deploy.title">Развернуть OpenClaw</h3>
             </div>
             <div class="deploy-modal-notice">
                 <div class="deploy-notice-icon">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                 </div>
-                <p data-i18n="deploy.notice">Сейчас большая очередь — мы подключаем пользователей вручную. Оставьте контакты, и мы напишем вам, как только подготовим ваш инстанс.</p>
+                <p data-i18n="deploy.notice">Сейчас у нас повышенная нагрузка — мы подключаем каждого пользователя вручную. Оставьте свои данные, и мы свяжемся с вами в течение пары часов.</p>
             </div>
             <form class="waitlist-form" id="waitlistForm">
                 <div class="form-row">
@@ -468,13 +471,17 @@
                     <input type="text" id="telegram" name="telegram" autocomplete="username" placeholder="@username">
                 </div>
                 <div class="form-group">
-                    <label for="useCase" data-i18n="wl.useCase">Для чего хотите использовать?</label>
-                    <input type="text" id="useCase" name="useCase" placeholder="Например: автоматизация задач, Telegram-бот..." data-i18n-ph="wl.useCase.ph">
+                    <label for="regPassword" data-i18n="wl.password">Пароль *</label>
+                    <input type="password" id="regPassword" name="password" autocomplete="new-password" placeholder="Минимум 6 символов" data-i18n-ph="wl.password.ph" required minlength="6">
                 </div>
                 <button type="submit" class="btn btn-primary btn-lg btn-glow btn-block" id="submitBtn">
-                    <span data-i18n="wl.submit">Занять место</span>
+                    <span data-i18n="wl.submit">Зарегистрироваться</span>
                     <svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
+                <p class="form-note">
+                    <span data-i18n="wl.note">Уже есть аккаунт?</span>
+                    <a href="https://my.clawdcloud.codecrafters.kz/login" style="color:#a78bfa" data-i18n="wl.login.link">Войти</a>
+                </p>
             </form>
         </div>
     </div>
@@ -491,7 +498,7 @@
                         <span class="faq-toggle"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                     </button>
                     <div class="faq-answer">
-                        <p data-i18n="faq.a1">ClawdCloud — это ваш личный AI-агент. Он не просто отвечает на вопросы, а реально выполняет задачи: ищет информацию в интернете, работает с сервисами, отправляет результаты в Telegram или на почту.</p>
+                        <p data-i18n="faq.a1">ClawdCloud — платформа для деплоя OpenClaw. Мы берём на себя сервер, установку, настройку, обновления и бэкапы. Вы просто нажимаете «Развернуть» и пользуетесь готовым OpenClaw.</p>
                     </div>
                 </div>
                 <div class="faq-item">
@@ -500,25 +507,25 @@
                         <span class="faq-toggle"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                     </button>
                     <div class="faq-answer">
-                        <p data-i18n="faq.a2">Никакого подвоха. Мы даём бесплатный триал для первых пользователей. Хотим, чтобы вы попробовали и убедились сами, прежде чем мы запустим платные тарифы.</p>
+                        <p data-i18n="faq.a2">Никакого подвоха. Мы даём бесплатный триал для первых пользователей — полноценный VPS + AI кредиты. Хотим, чтобы вы попробовали и убедились сами, прежде чем мы запустим платные тарифы.</p>
                     </div>
                 </div>
                 <div class="faq-item">
                     <button class="faq-question">
-                        <span data-i18n="faq.q3">Чем это отличается от ChatGPT?</span>
+                        <span data-i18n="faq.q3">Я не программист. Мне это подойдёт?</span>
                         <span class="faq-toggle"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                     </button>
                     <div class="faq-answer">
-                        <p data-i18n="faq.a3">ChatGPT отвечает на вопросы. ClawdCloud — действует. Он может зайти на сайт, найти информацию, составить отчёт, отправить вам результат в Telegram, работать с Google Sheets и десятками других сервисов.</p>
+                        <p data-i18n="faq.a3">В этом и смысл ClawdCloud. Никакого SSH, Docker или терминала. Два клика в браузере — и OpenClaw развёрнут. Проще, чем зарегаться в соцсети.</p>
                     </div>
                 </div>
                 <div class="faq-item">
                     <button class="faq-question">
-                        <span data-i18n="faq.q4">Это сложно настроить?</span>
+                        <span data-i18n="faq.q4">Почему не захостить OpenClaw самому?</span>
                         <span class="faq-toggle"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                     </button>
                     <div class="faq-answer">
-                        <p data-i18n="faq.a4">Нет. Зарегистрируйтесь, напишите задачу в Telegram — готово. Никаких настроек, установок или технических знаний. Проще, чем зарегистрироваться в соцсети.</p>
+                        <p data-i18n="faq.a4">Можно. Но это VPS, SSH, Docker, конфиги, SSL, обновления, бэкапы, мониторинг... ClawdCloud делает всё это за вас в два клика. Тот же OpenClaw, ноль DevOps.</p>
                     </div>
                 </div>
                 <div class="faq-item">
@@ -532,11 +539,11 @@
                 </div>
                 <div class="faq-item">
                     <button class="faq-question">
-                        <span data-i18n="faq.q6">Какие задачи он может выполнять?</span>
+                        <span data-i18n="faq.q6">Можно ли использовать свой API ключ?</span>
                         <span class="faq-toggle"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                     </button>
                     <div class="faq-answer">
-                        <p data-i18n="faq.a6">Почти любые цифровые задачи: поиск информации, работа с таблицами, мониторинг сайтов, создание контента, сравнение цен, заполнение форм и многое другое. Если задача связана с интернетом — скорее всего, агент справится.</p>
+                        <p data-i18n="faq.a6">Да. Принесите свой ключ OpenAI, Anthropic или любой другой — без наценки. Или используйте наши кредиты — как удобнее.</p>
                     </div>
                 </div>
             </div>
@@ -547,10 +554,10 @@
     <section class="cta-section">
         <div class="container">
             <div class="cta-glow"></div>
-            <h2 class="section-title cta-title" data-i18n="cta.title">Рутина не исчезнет сама.<br><span class="gradient-text">Но теперь это не ваша проблема.</span></h2>
-            <p class="section-subtitle" data-i18n="cta.subtitle">Бесплатно. Без карты. Результат — в Telegram.</p>
+            <h2 class="section-title cta-title" data-i18n="cta.title">Хватит настраивать серверы.<br><span class="gradient-text">Просто разверните OpenClaw.</span></h2>
+            <p class="section-subtitle" data-i18n="cta.subtitle">Два клика. 60 секунд. Бесплатно. Без карты.</p>
             <a href="#" onclick="openDeployModal();return false" class="btn btn-primary btn-xl btn-glow magnetic-btn" data-track-source="final_cta">
-                <span data-i18n="cta.btn">Попробовать бесплатно</span>
+                <span data-i18n="cta.btn">Развернуть OpenClaw</span>
                 <svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
         </div>
@@ -565,7 +572,7 @@
                         <div class="logo-mark"><svg width="20" height="20" viewBox="0 0 32 32" fill="none"><defs><linearGradient id="lgf" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#06b6d4"/></linearGradient></defs><path d="M22.5 13.2a5.5 5.5 0 00-10.6-1.5A4 4 0 008 15.5a4 4 0 004 4h9.5a3.5 3.5 0 001-6.3z" fill="url(#lgf)"/><path d="M17 12.5l-3 4.5h2.5L15.5 21l4-5h-2.5z" fill="#fff"/></svg></div>
                         <span class="logo-text">ClawdCloud</span>
                     </a>
-                    <p data-i18n="footer.desc">AI-агент. Не советует — делает.</p>
+                    <p data-i18n="footer.desc">Платформа для деплоя OpenClaw. Без геморроя.</p>
                 </div>
                 <div class="footer-col">
                     <h4 data-i18n="footer.product">Продукт</h4>
@@ -575,7 +582,7 @@
                 </div>
                 <div class="footer-col">
                     <h4 data-i18n="footer.resources">Ресурсы</h4>
-                    <a href="#faq">FAQ</a>
+                    <a href="https://docs.openclaw.ai" target="_blank">OpenClaw Docs</a>
                     <a href="#" target="_blank">Discord</a>
                 </div>
                 <div class="footer-col">
