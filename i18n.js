@@ -385,12 +385,26 @@ async function detectByGeo() {
   }
 }
 
+function sanitizeI18n(html) {
+  const div = document.createElement('div');
+  div.innerHTML = html;
+  div.querySelectorAll('script,iframe,object,embed,form,link,meta').forEach(n => n.remove());
+  div.querySelectorAll('*').forEach(n => {
+    for (const a of [...n.attributes]) {
+      if (a.name.startsWith('on') || (a.name === 'href' && (n.getAttribute('href') || '').startsWith('javascript:'))) {
+        n.removeAttribute(a.name);
+      }
+    }
+  });
+  return div.innerHTML;
+}
+
 function applyLanguage(lang) {
   document.documentElement.lang = lang;
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
     const val = translations[lang]?.[key];
-    if (val !== undefined) el.innerHTML = val;
+    if (val !== undefined) el.innerHTML = sanitizeI18n(val);
   });
 
   document.querySelectorAll('[data-i18n-ph]').forEach(el => {

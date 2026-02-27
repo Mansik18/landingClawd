@@ -7,7 +7,8 @@ const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-in-production';
+if (!process.env.JWT_SECRET) throw new Error('JWT_SECRET environment variable is required');
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // --- Rate limiting ---
 const authLimiter = rateLimit({
@@ -71,6 +72,23 @@ const insertUser = db.prepare(`
   VALUES (@email, @password_hash, @first_name, @last_name, @telegram)
 `);
 const findUserByEmail = db.prepare('SELECT * FROM users WHERE email = ?');
+
+// --- Security headers ---
+app.use((_req, res, next) => {
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  next();
+});
+
+// --- HTTPS enforcement (behind reverse proxy) ---
+app.use((req, res, next) => {
+  if (req.headers['x-forwarded-proto'] === 'http') {
+    return res.redirect(301, 'https://' + req.headers.host + req.url);
+  }
+  next();
+});
 
 // --- Middleware ---
 app.use(express.json());

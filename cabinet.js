@@ -8,8 +8,10 @@ const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3002;
-const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-in-production';
-const INTERNAL_API_KEY = process.env.INTERNAL_API_KEY || 'dev-internal-key';
+if (!process.env.JWT_SECRET) throw new Error('JWT_SECRET environment variable is required');
+if (!process.env.INTERNAL_API_KEY) throw new Error('INTERNAL_API_KEY environment variable is required');
+const JWT_SECRET = process.env.JWT_SECRET;
+const INTERNAL_API_KEY = process.env.INTERNAL_API_KEY;
 const ADMIN_API_URL = process.env.ADMIN_API_URL || 'http://127.0.0.1:3000';
 const PLATFORM_DOMAIN = process.env.PLATFORM_DOMAIN || 'clawdcloud.codecrafters.kz';
 
@@ -18,6 +20,13 @@ const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 15, // 15 attempts per window
   message: { error: 'Слишком много попыток входа. Попробуйте через 15 минут.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+const apiLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 30, // 30 requests per minute
+  message: { error: 'Слишком много запросов. Попробуйте позже.' },
   standardHeaders: true,
   legacyHeaders: false,
 });
@@ -36,10 +45,39 @@ const updateUserActive = db.prepare(
   'UPDATE users SET status = ?, container_name = ? WHERE id = ?'
 );
 
+// --- Security headers ---
+app.use((_req, res, next) => {
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  next();
+});
+
+// --- HTTPS enforcement (behind reverse proxy) ---
+app.use((req, res, next) => {
+  if (req.headers['x-forwarded-proto'] === 'http') {
+    return res.redirect(301, 'https://' + req.headers.host + req.url);
+  }
+  next();
+});
+
 // --- Middleware ---
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+// --- CSRF protection (double-submit header check) ---
+function csrfCheck(req, res, next) {
+  if (req.method === 'POST' && !req.path.startsWith('/login')) {
+    const xrw = req.headers['x-requested-with'];
+    if (xrw !== 'XMLHttpRequest') {
+      return res.status(403).json({ error: 'CSRF check failed' });
+    }
+  }
+  next();
+}
+app.use(csrfCheck);
 
 function resolveUser(req) {
   const token = req.cookies.cabinet_token;
@@ -163,7 +201,7 @@ app.get('/dashboard', authMiddleware, async (req, res) => {
 });
 
 // JSON API for dashboard data
-app.get('/api/me', apiAuthMiddleware, async (req, res) => {
+app.get('/api/me', apiLimiter, apiAuthMiddleware, async (req, res) => {
   const user = findUserById.get(req.user.id);
   if (!user) return res.status(401).json({ error: 'User not found' });
 
@@ -207,7 +245,7 @@ app.get('/api/me', apiAuthMiddleware, async (req, res) => {
 });
 
 // --- Telegram pairing ---
-app.get('/api/pairing/pending', apiAuthMiddleware, async (req, res) => {
+app.get('/api/pairing/pending', apiLimiter, apiAuthMiddleware, async (req, res) => {
   if (!req.user.container_name) {
     return res.json({ exit_code: -1, output: 'No container' });
   }
@@ -224,7 +262,7 @@ app.get('/api/pairing/pending', apiAuthMiddleware, async (req, res) => {
   }
 });
 
-app.post('/api/pairing/approve', apiAuthMiddleware, async (req, res) => {
+app.post('/api/pairing/approve', apiLimiter, apiAuthMiddleware, async (req, res) => {
   if (!req.user.container_name) {
     return res.status(400).json({ error: 'No container' });
   }

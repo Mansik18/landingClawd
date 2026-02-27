@@ -538,18 +538,32 @@
           badge.innerHTML = `<span class="badge ${cls}">${label}</span>`;
         }
 
-        // URL
+        // URL (validated before rendering)
         const urlField = document.getElementById('botUrlField');
         if (data.url && !isPending) {
-          urlField.innerHTML = `<a href="${data.url}" target="_blank">${data.url}</a>`;
+          try {
+            const parsedUrl = new URL(data.url);
+            if (parsedUrl.protocol === 'https:' || parsedUrl.protocol === 'http:') {
+              const a = document.createElement('a');
+              a.href = data.url;
+              a.target = '_blank';
+              a.textContent = data.url;
+              urlField.textContent = '';
+              urlField.appendChild(a);
+            } else {
+              urlField.textContent = data.url;
+            }
+          } catch { urlField.textContent = data.url; }
         } else {
           urlField.innerHTML = '<span class="muted">&mdash;</span>';
         }
 
-        // Password
+        // Password (masked by default)
         const pwField = document.getElementById('passwordField');
         if (data.password && !isPending) {
-          pwField.innerHTML = `<span class="mono">${data.password}</span>`;
+          const masked = '\u2022'.repeat(data.password.length);
+          pwField.innerHTML = `<span class="mono" id="pwMasked">${masked}</span> <button onclick="togglePw()" style="background:none;border:1px solid #2d3148;color:#64748b;font-size:0.72rem;padding:0.1rem 0.4rem;border-radius:0.2rem;cursor:pointer" id="pwToggle">показать</button>`;
+          pwField.dataset.pw = data.password;
         } else {
           pwField.innerHTML = '<span class="muted">&mdash;</span>';
         }
@@ -645,25 +659,73 @@
           list.innerHTML = '<span style="color:#64748b;font-size:0.8rem">Нет ожидающих запросов</span>';
           return;
         }
-        list.innerHTML = requests.map(r => {
+        list.textContent = '';
+        requests.forEach(r => {
           const name = [r.meta.firstName, r.meta.lastName].filter(Boolean).join(' ') || '—';
           const username = r.meta.username ? `@${r.meta.username}` : '';
           const date = r.requested ? new Date(r.requested).toLocaleString('ru-RU', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' }) : '';
-          return `<div style="display:flex;align-items:center;gap:0.75rem;padding:0.55rem 0.75rem;background:#0f1117;border:1px solid #2d3148;border-radius:0.35rem;margin-bottom:0.4rem">
-            <div style="flex:1;min-width:0">
-              <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap">
-                <span style="font-size:0.85rem;font-weight:600;color:#e2e8f0">${name.replace(/</g,'&lt;')}</span>
-                ${username ? `<span style="font-size:0.78rem;color:#a78bfa">${username.replace(/</g,'&lt;')}</span>` : ''}
-              </div>
-              <div style="display:flex;align-items:center;gap:0.75rem;margin-top:0.2rem">
-                <span style="font-size:0.75rem;color:#64748b;font-family:ui-monospace,monospace">${r.code}</span>
-                ${date ? `<span style="font-size:0.72rem;color:#475569">${date}</span>` : ''}
-              </div>
-            </div>
-            <button onclick="approveCode('${r.code}')" style="padding:0.3rem 0.75rem;background:#14532d;color:#86efac;border:1px solid #166534;border-radius:0.3rem;font-size:0.78rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:opacity 0.15s" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">Подтвердить</button>
-          </div>`;
-        }).join('');
+
+          const row = document.createElement('div');
+          row.style.cssText = 'display:flex;align-items:center;gap:0.75rem;padding:0.55rem 0.75rem;background:#0f1117;border:1px solid #2d3148;border-radius:0.35rem;margin-bottom:0.4rem';
+
+          const info = document.createElement('div');
+          info.style.cssText = 'flex:1;min-width:0';
+
+          const nameRow = document.createElement('div');
+          nameRow.style.cssText = 'display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap';
+          const nameSpan = document.createElement('span');
+          nameSpan.style.cssText = 'font-size:0.85rem;font-weight:600;color:#e2e8f0';
+          nameSpan.textContent = name;
+          nameRow.appendChild(nameSpan);
+          if (username) {
+            const usrSpan = document.createElement('span');
+            usrSpan.style.cssText = 'font-size:0.78rem;color:#a78bfa';
+            usrSpan.textContent = username;
+            nameRow.appendChild(usrSpan);
+          }
+          info.appendChild(nameRow);
+
+          const detailRow = document.createElement('div');
+          detailRow.style.cssText = 'display:flex;align-items:center;gap:0.75rem;margin-top:0.2rem';
+          const codeSpan = document.createElement('span');
+          codeSpan.style.cssText = 'font-size:0.75rem;color:#64748b;font-family:ui-monospace,monospace';
+          codeSpan.textContent = r.code;
+          detailRow.appendChild(codeSpan);
+          if (date) {
+            const dateSpan = document.createElement('span');
+            dateSpan.style.cssText = 'font-size:0.72rem;color:#475569';
+            dateSpan.textContent = date;
+            detailRow.appendChild(dateSpan);
+          }
+          info.appendChild(detailRow);
+
+          const btn = document.createElement('button');
+          btn.style.cssText = 'padding:0.3rem 0.75rem;background:#14532d;color:#86efac;border:1px solid #166534;border-radius:0.3rem;font-size:0.78rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:opacity 0.15s';
+          btn.textContent = 'Подтвердить';
+          btn.addEventListener('click', () => approveCode(r.code));
+          btn.addEventListener('mouseover', () => btn.style.opacity = '0.8');
+          btn.addEventListener('mouseout', () => btn.style.opacity = '1');
+
+          row.appendChild(info);
+          row.appendChild(btn);
+          list.appendChild(row);
+        });
       } catch {}
+    }
+
+    function togglePw() {
+      const field = document.getElementById('passwordField');
+      const span = document.getElementById('pwMasked');
+      const btn = document.getElementById('pwToggle');
+      if (!field || !span || !btn) return;
+      const pw = field.dataset.pw;
+      if (btn.textContent === 'показать') {
+        span.textContent = pw;
+        btn.textContent = 'скрыть';
+      } else {
+        span.textContent = '\u2022'.repeat(pw.length);
+        btn.textContent = 'показать';
+      }
     }
 
     async function approveCode(code) {
@@ -672,7 +734,7 @@
       try {
         const res = await fetch('/api/pairing/approve', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
           body: JSON.stringify({ code }),
         });
         const data = await res.json();
