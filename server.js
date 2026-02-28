@@ -62,6 +62,7 @@ db.exec(`
 // Migrations (safe if columns already exist)
 try { db.exec(`ALTER TABLE users ADD COLUMN bot_username TEXT DEFAULT ''`); } catch {}
 try { db.exec(`ALTER TABLE users ADD COLUMN auto_paired INTEGER DEFAULT 0`); } catch {}
+try { db.exec(`ALTER TABLE users ADD COLUMN telegram_chat_id TEXT DEFAULT ''`); } catch {}
 
 // --- Prepared statements ---
 const insertWaitlist = db.prepare(`

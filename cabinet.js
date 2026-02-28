@@ -48,7 +48,10 @@ const markAutoPaired = db.prepare(
   'UPDATE users SET auto_paired = 1 WHERE id = ?'
 );
 const findUserByIdWithToken = db.prepare(
-  'SELECT id, bot_token, status FROM users WHERE id = ?'
+  'SELECT id, bot_token, status, telegram_chat_id FROM users WHERE id = ?'
+);
+const saveTelegramChatId = db.prepare(
+  'UPDATE users SET telegram_chat_id = ? WHERE id = ? AND (telegram_chat_id IS NULL OR telegram_chat_id = "")'
 );
 
 // --- Security headers ---
@@ -400,6 +403,11 @@ app.post('/webhook/tg/:userId', async (req, res) => {
 
   const msg = req.body?.message;
   if (!msg?.chat?.id) return;
+
+  // Save chat_id for future notifications (e.g. approval)
+  if (!user.telegram_chat_id) {
+    saveTelegramChatId.run(String(msg.chat.id), user.id);
+  }
 
   const text = 'Привет! Ваша заявка на рассмотрении. Как только администратор подтвердит вашу учётную запись, я напишу вам и продолжим работу.';
 
