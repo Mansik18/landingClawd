@@ -57,7 +57,7 @@ const findUserByIdWithToken = db.prepare(
   'SELECT id, bot_token, status, telegram_chat_id FROM users WHERE id = ?'
 );
 const saveTelegramChatId = db.prepare(
-  'UPDATE users SET telegram_chat_id = ? WHERE id = ? AND (telegram_chat_id IS NULL OR telegram_chat_id = "")'
+  "UPDATE users SET telegram_chat_id = ? WHERE id = ? AND (telegram_chat_id IS NULL OR telegram_chat_id = '')"
 );
 
 // --- Security headers ---
