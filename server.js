@@ -59,8 +59,9 @@ db.exec(`
   )
 `);
 
-// Migration: add bot_username column (safe if already exists)
+// Migrations (safe if columns already exist)
 try { db.exec(`ALTER TABLE users ADD COLUMN bot_username TEXT DEFAULT ''`); } catch {}
+try { db.exec(`ALTER TABLE users ADD COLUMN auto_paired INTEGER DEFAULT 0`); } catch {}
 
 // --- Prepared statements ---
 const insertWaitlist = db.prepare(`

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Бот подключён — ClawdCloud</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      background: #0f1117;
+      color: #e2e8f0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card {
+      background: #1a1d27;
+      border: 1px solid #2d3148;
+      border-radius: 0.75rem;
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 520px;
+      margin: 1rem;
+      text-align: center;
+    }
+    h1 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #c4b5fd;
+      margin-bottom: 0.3rem;
+    }
+    .subtitle {
+      color: #94a3b8;
+      font-size: 0.88rem;
+      margin-bottom: 1.5rem;
+    }
+    .bot-link-wrap {
+      background: #0f1117;
+      border: 1px solid #2d3148;
+      border-radius: 0.5rem;
+      padding: 1.1rem;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+    }
+    .bot-avatar {
+      width: 2.8rem;
+      height: 2.8rem;
+      background: #6d28d9;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .bot-info { text-align: left; }
+    .bot-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #a78bfa;
+    }
+    .bot-name a {
+      color: #a78bfa;
+      text-decoration: none;
+    }
+    .bot-name a:hover { text-decoration: underline; }
+    .bot-sub {
+      color: #64748b;
+      font-size: 0.78rem;
+      margin-top: 0.1rem;
+    }
+    .step {
+      background: rgba(15,17,23,0.5);
+      border: 1px solid #2d3148;
+      border-radius: 0.5rem;
+      padding: 0.9rem 1.1rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      gap: 0.75rem;
+      text-align: left;
+    }
+    .step-num {
+      width: 1.5rem;
+      height: 1.5rem;
+      background: #6d28d9;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+    .step h3 {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #e2e8f0;
+      margin-bottom: 0.15rem;
+    }
+    .step p {
+      color: #94a3b8;
+      font-size: 0.8rem;
+      line-height: 1.4;
+    }
+    .info-box {
+      background: #1e3a5f;
+      border: 1px solid #1d4ed8;
+      border-radius: 0.4rem;
+      padding: 0.75rem 1rem;
+      margin-top: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+    .info-box p {
+      color: #93c5fd;
+      font-size: 0.82rem;
+      line-height: 1.45;
+    }
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 0.7rem;
+      background: #6d28d9;
+      color: #fff;
+      border: 1px solid #7c3aed;
+      border-radius: 0.4rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      text-decoration: none;
+      text-align: center;
+    }
+    .btn:hover { opacity: 0.85; }
+    .loading { color: #64748b; }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="card">
+    <div style="margin-bottom:1rem">
+      <svg width="28" height="28" viewBox="0 0 32 32" fill="none"><defs><linearGradient id="lg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#06b6d4"/></linearGradient></defs><path d="M22.5 13.2a5.5 5.5 0 00-10.6-1.5A4 4 0 008 15.5a4 4 0 004 4h9.5a3.5 3.5 0 001-6.3z" fill="url(#lg)"/><path d="M17 12.5l-3 4.5h2.5L15.5 21l4-5h-2.5z" fill="#fff"/></svg>
+    </div>
+    <h1>Бот подключён!</h1>
+    <p class="subtitle">Осталось совсем немного</p>
+
+    <div id="content" style="display:none">
+      <div class="bot-link-wrap">
+        <div class="bot-avatar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        </div>
+        <div class="bot-info">
+          <div class="bot-name"><a id="botLink" href="#" target="_blank"></a></div>
+          <div class="bot-sub">Ваш Telegram-бот</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <div>
+          <h3>Напишите боту</h3>
+          <p>Откройте <a id="botLinkInline" href="#" target="_blank" style="color:#a78bfa;text-decoration:underline">вашего бота</a> в Telegram и отправьте любое сообщение.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div>
+          <h3>Дождитесь активации</h3>
+          <p>Администратор проверит заявку и активирует бота. После этого бот начнёт отвечать на ваши сообщения.</p>
+        </div>
+      </div>
+
+      <div class="info-box">
+        <p>Обычно активация занимает до 24 часов. Мы пришлём уведомление, как только бот будет готов к работе.</p>
+      </div>
+
+      <a href="/dashboard" class="btn">Перейти в кабинет</a>
+    </div>
+
+    <div id="loading" class="loading">Загрузка...</div>
+  </div>
+
+  <script>
+    (async () => {
+      try {
+        const res = await fetch('/api/me');
+        if (res.status === 401) { window.location.href = '/login'; return; }
+        const data = await res.json();
+
+        if (!data.botUsername) { window.location.href = '/onboarding'; return; }
+
+        const botUrl = 'https://t.me/' + encodeURIComponent(data.botUsername);
+        document.getElementById('botLink').href = botUrl;
+        document.getElementById('botLink').textContent = '@' + data.botUsername;
+        document.getElementById('botLinkInline').href = botUrl;
+
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('content').style.display = 'block';
+      } catch (err) {
+        document.getElementById('loading').textContent = 'Ошибка загрузки';
+      }
+    })();
+  </script>
+</body>
+</html>

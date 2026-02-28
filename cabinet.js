@@ -44,6 +44,9 @@ const updateBotTokenAndUsername = db.prepare(
 const updateUserActive = db.prepare(
   'UPDATE users SET status = ?, container_name = ? WHERE id = ?'
 );
+const markAutoPaired = db.prepare(
+  'UPDATE users SET auto_paired = 1 WHERE id = ?'
+);
 
 // --- Security headers ---
 app.use((_req, res, next) => {
@@ -111,9 +114,11 @@ function apiAuthMiddleware(req, res, next) {
 }
 
 function statusRedirect(user) {
-  // No bot token yet → onboarding first (regardless of status)
+  // No bot token yet → onboarding step 1
   if (!user.bot_token && user.status !== 'active') return '/onboarding';
-  // Has bot token or active → dashboard (shows pending or active state)
+  // Has bot token but not active → onboarding step 2 (wait for approval)
+  if (user.bot_token && user.status !== 'active') return '/onboarding/complete';
+  // Active → dashboard
   return '/dashboard';
 }
 
@@ -182,11 +187,15 @@ app.get('/logout', (_req, res) => {
 
 // --- Onboarding ---
 app.get('/onboarding', authMiddleware, (req, res) => {
-  // If already has bot token, go to dashboard
-  if (req.user.bot_token || req.user.status === 'active') {
-    return res.redirect('/dashboard');
-  }
+  if (req.user.status === 'active') return res.redirect('/dashboard');
+  if (req.user.bot_token) return res.redirect('/onboarding/complete');
   res.sendFile(path.join(__dirname, 'cabinet', 'onboarding.html'));
+});
+
+app.get('/onboarding/complete', authMiddleware, (req, res) => {
+  if (req.user.status === 'active') return res.redirect('/dashboard');
+  if (!req.user.bot_token) return res.redirect('/onboarding');
+  res.sendFile(path.join(__dirname, 'cabinet', 'onboarding-complete.html'));
 });
 
 app.post('/onboarding', authMiddleware, async (req, res) => {
@@ -211,7 +220,7 @@ app.post('/onboarding', authMiddleware, async (req, res) => {
     const botUsername = tgData.result.username;
 
     updateBotTokenAndUsername.run(token, botUsername, req.user.id);
-    res.json({ redirect: '/dashboard' });
+    res.json({ redirect: '/onboarding/complete' });
   } catch (err) {
     console.error('Save bot token error:', err);
     res.status(500).json({ error: 'Ошибка сохранения токена' });
@@ -269,8 +278,54 @@ app.get('/api/me', apiLimiter, apiAuthMiddleware, async (req, res) => {
     }
   }
 
+  // Auto-pair first user (owner) silently
+  if (user.status === 'active' && user.container_name && !user.auto_paired) {
+    try {
+      const pendingResp = await fetch(
+        `${ADMIN_API_URL}/api/containers/${user.container_name}/pairing/pending`,
+        { headers: { 'X-Internal-Key': INTERNAL_API_KEY } }
+      );
+      if (pendingResp.ok) {
+        const pendingData = await pendingResp.json();
+        const output = (pendingData.output || '').trim();
+        // Parse markdown table to find first pairing code
+        const code = parsePairingCode(output);
+        if (code) {
+          await fetch(
+            `${ADMIN_API_URL}/api/containers/${user.container_name}/pairing/approve`,
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-Internal-Key': INTERNAL_API_KEY,
+              },
+              body: JSON.stringify({ code }),
+            }
+          );
+          markAutoPaired.run(user.id);
+        }
+      }
+    } catch (err) {
+      console.error('Auto-pair error:', err);
+    }
+  }
+
   res.json(result);
 });
+
+// Parse first pairing code from openclaw CLI markdown table output
+function parsePairingCode(output) {
+  if (!output) return null;
+  const lines = output.split('\n').filter(l => l.trim());
+  const headerIdx = lines.findIndex(l => /code/i.test(l) && l.includes('|'));
+  if (headerIdx < 0) return null;
+  const dataStart = headerIdx + 2; // skip separator line
+  for (let i = dataStart; i < lines.length; i++) {
+    const cells = lines[i].split('|').map(c => c.trim()).filter(Boolean);
+    if (cells.length >= 1 && cells[0]) return cells[0];
+  }
+  return null;
+}
 
 // --- Telegram pairing ---
 app.get('/api/pairing/pending', apiLimiter, apiAuthMiddleware, async (req, res) => {

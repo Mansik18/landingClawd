@@ -399,34 +399,6 @@
           </div>
         </div>
 
-        <!-- What's next (pending only) -->
-        <div id="nextStepsCard" class="card card-gs" style="display:none">
-          <div class="card-title">Что дальше</div>
-          <div class="gs-steps">
-            <div class="gs-step">
-              <div class="gs-num">1</div>
-              <div class="gs-body">
-                <h4>Одобрение заявки</h4>
-                <p>Администратор проверит вашу заявку и активирует бота. Обычно это занимает до 24 часов.</p>
-              </div>
-            </div>
-            <div class="gs-step">
-              <div class="gs-num">2</div>
-              <div class="gs-body">
-                <h4>Напишите боту</h4>
-                <p>После активации откройте вашего бота в Telegram и отправьте любое сообщение. Бот ответит кодом подтверждения.</p>
-              </div>
-            </div>
-            <div class="gs-step">
-              <div class="gs-num">3</div>
-              <div class="gs-body">
-                <h4>Введите код</h4>
-                <p>Вернитесь сюда и введите полученный код в карточке «Telegram доступ». После этого бот начнёт отвечать на ваши сообщения.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
         <!-- Container -->
         <div class="card">
           <div class="card-title">Контейнер</div>
@@ -667,9 +639,6 @@
             ? 'Бот будет активирован после одобрения заявки'
             : 'Напишите боту, чтобы начать общение';
         }
-
-        // Next steps (pending only)
-        document.getElementById('nextStepsCard').style.display = isPending ? 'block' : 'none';
 
         // Account
         document.getElementById('userEmail').textContent = data.email;
