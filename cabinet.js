@@ -38,8 +38,8 @@ db.pragma('journal_mode = WAL');
 
 const findUserByEmail = db.prepare('SELECT * FROM users WHERE email = ?');
 const findUserById = db.prepare('SELECT * FROM users WHERE id = ?');
-const updateBotToken = db.prepare(
-  'UPDATE users SET bot_token = ? WHERE id = ?'
+const updateBotTokenAndUsername = db.prepare(
+  'UPDATE users SET bot_token = ?, bot_username = ? WHERE id = ?'
 );
 const updateUserActive = db.prepare(
   'UPDATE users SET status = ?, container_name = ? WHERE id = ?'
@@ -202,8 +202,15 @@ app.post('/onboarding', authMiddleware, async (req, res) => {
   const token = botToken.trim();
 
   try {
-    // Just save the bot token — container will be created after admin approval
-    updateBotToken.run(token, req.user.id);
+    // Validate token via Telegram getMe API and get bot username
+    const tgRes = await fetch(`https://api.telegram.org/bot${token}/getMe`);
+    const tgData = await tgRes.json();
+    if (!tgData.ok || !tgData.result?.username) {
+      return res.status(400).json({ error: 'Токен недействителен. Проверьте и попробуйте снова.' });
+    }
+    const botUsername = tgData.result.username;
+
+    updateBotTokenAndUsername.run(token, botUsername, req.user.id);
     res.json({ redirect: '/dashboard' });
   } catch (err) {
     console.error('Save bot token error:', err);
@@ -237,6 +244,7 @@ app.get('/api/me', apiLimiter, apiAuthMiddleware, async (req, res) => {
     spend: 0,
     maxBudget: null,
     botToken: user.bot_token || null,
+    botUsername: user.bot_username || null,
   };
 
   // Active user with container — fetch live info

@@ -385,6 +385,48 @@
 
         <h2 class="page-title">Личный кабинет</h2>
 
+        <!-- Your bot (visible when botUsername is known) -->
+        <div id="botCard" class="card" style="display:none">
+          <div class="card-title">Ваш бот</div>
+          <div style="display:flex;align-items:center;gap:0.85rem">
+            <div style="width:2.5rem;height:2.5rem;background:#6d28d9;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+            </div>
+            <div>
+              <a id="botLink" href="#" target="_blank" style="color:#a78bfa;font-size:0.95rem;font-weight:600;text-decoration:none"></a>
+              <p id="botHint" style="color:#94a3b8;font-size:0.8rem;margin-top:0.15rem"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- What's next (pending only) -->
+        <div id="nextStepsCard" class="card card-gs" style="display:none">
+          <div class="card-title">Что дальше</div>
+          <div class="gs-steps">
+            <div class="gs-step">
+              <div class="gs-num">1</div>
+              <div class="gs-body">
+                <h4>Одобрение заявки</h4>
+                <p>Администратор проверит вашу заявку и активирует бота. Обычно это занимает до 24 часов.</p>
+              </div>
+            </div>
+            <div class="gs-step">
+              <div class="gs-num">2</div>
+              <div class="gs-body">
+                <h4>Напишите боту</h4>
+                <p>После активации откройте вашего бота в Telegram и отправьте любое сообщение. Бот ответит кодом подтверждения.</p>
+              </div>
+            </div>
+            <div class="gs-step">
+              <div class="gs-num">3</div>
+              <div class="gs-body">
+                <h4>Введите код</h4>
+                <p>Вернитесь сюда и введите полученный код в карточке «Telegram доступ». После этого бот начнёт отвечать на ваши сообщения.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Container -->
         <div class="card">
           <div class="card-title">Контейнер</div>
@@ -444,7 +486,7 @@
               <div class="gs-num">1</div>
               <div class="gs-body">
                 <h4>Напишите боту в Telegram</h4>
-                <p>Откройте <a href="https://t.me/BotFather" target="_blank" style="color:#a78bfa">@BotFather</a> в Telegram — там вы найдёте ссылку на вашего бота. Перейдите по ней и отправьте любое сообщение.</p>
+                <p>Откройте <a id="gsBot" href="#" target="_blank" style="color:#a78bfa">вашего бота</a> в Telegram и отправьте любое сообщение.</p>
               </div>
             </div>
             <div class="gs-step">
@@ -599,6 +641,12 @@
         if (isActive && data.url) {
           gsCard.style.display = 'block';
 
+          // Bot link in Getting Started
+          const gsBot = document.getElementById('gsBot');
+          if (data.botUsername) {
+            gsBot.href = 'https://t.me/' + encodeURIComponent(data.botUsername);
+            gsBot.textContent = '@' + data.botUsername;
+          }
           // Admin panel credentials
           document.getElementById('gsUrl').href = data.url;
           document.getElementById('gsUrl').textContent = data.url;
@@ -607,6 +655,21 @@
         } else {
           gsCard.style.display = 'none';
         }
+
+        // Bot card (pending + active)
+        const botCard = document.getElementById('botCard');
+        if (data.botUsername) {
+          botCard.style.display = 'block';
+          const botLink = document.getElementById('botLink');
+          botLink.href = 'https://t.me/' + encodeURIComponent(data.botUsername);
+          botLink.textContent = '@' + data.botUsername;
+          document.getElementById('botHint').textContent = isPending
+            ? 'Бот будет активирован после одобрения заявки'
+            : 'Напишите боту, чтобы начать общение';
+        }
+
+        // Next steps (pending only)
+        document.getElementById('nextStepsCard').style.display = isPending ? 'block' : 'none';
 
         // Account
         document.getElementById('userEmail').textContent = data.email;

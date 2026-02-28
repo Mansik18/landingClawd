@@ -59,6 +59,9 @@ db.exec(`
   )
 `);
 
+// Migration: add bot_username column (safe if already exists)
+try { db.exec(`ALTER TABLE users ADD COLUMN bot_username TEXT DEFAULT ''`); } catch {}
+
 // --- Prepared statements ---
 const insertWaitlist = db.prepare(`
   INSERT INTO waitlist (first_name, last_name, email, telegram, use_case)
