@@ -47,6 +47,9 @@ const updateUserActive = db.prepare(
 const markAutoPaired = db.prepare(
   'UPDATE users SET auto_paired = 1 WHERE id = ?'
 );
+const findUserByIdWithToken = db.prepare(
+  'SELECT id, bot_token, status FROM users WHERE id = ?'
+);
 
 // --- Security headers ---
 app.use((_req, res, next) => {
@@ -72,7 +75,7 @@ app.use(cookieParser());
 
 // --- CSRF protection (double-submit header check) ---
 function csrfCheck(req, res, next) {
-  if (req.method === 'POST' && !req.path.startsWith('/login')) {
+  if (req.method === 'POST' && !req.path.startsWith('/login') && !req.path.startsWith('/webhook/')) {
     const xrw = req.headers['x-requested-with'];
     if (xrw !== 'XMLHttpRequest') {
       return res.status(403).json({ error: 'CSRF check failed' });
@@ -220,6 +223,15 @@ app.post('/onboarding', authMiddleware, async (req, res) => {
     const botUsername = tgData.result.username;
 
     updateBotTokenAndUsername.run(token, botUsername, req.user.id);
+
+    // Set temporary Telegram webhook so bot can reply while pending
+    const webhookUrl = `https://my.${PLATFORM_DOMAIN}/webhook/tg/${req.user.id}`;
+    await fetch(`https://api.telegram.org/bot${token}/setWebhook`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url: webhookUrl }),
+    }).catch(err => console.error('setWebhook error:', err));
+
     res.json({ redirect: '/onboarding/complete' });
   } catch (err) {
     console.error('Save bot token error:', err);
@@ -374,6 +386,28 @@ app.post('/api/pairing/approve', apiLimiter, apiAuthMiddleware, async (req, res)
     console.error('Pairing approve error:', err);
     res.status(500).json({ error: 'Failed to approve pairing' });
   }
+});
+
+// --- Telegram webhook (temporary, while container is pending) ---
+app.post('/webhook/tg/:userId', async (req, res) => {
+  res.sendStatus(200); // always reply 200 to Telegram
+
+  const user = findUserByIdWithToken.get(req.params.userId);
+  if (!user || !user.bot_token) return;
+
+  // If container is active, OpenClaw handles the webhook — ignore
+  if (user.status === 'active') return;
+
+  const msg = req.body?.message;
+  if (!msg?.chat?.id) return;
+
+  const text = 'Привет! Ваша заявка на рассмотрении. Как только администратор подтвердит вашу учётную запись, я напишу вам и продолжим работу.';
+
+  await fetch(`https://api.telegram.org/bot${user.bot_token}/sendMessage`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ chat_id: msg.chat.id, text }),
+  }).catch(err => console.error('Webhook reply error:', err));
 });
 
 // --- Static for cabinet pages ---
