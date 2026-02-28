@@ -459,12 +459,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     throw new Error(data.error || translations[window.__currentLang || 'ru']['form.error']);
                 }
 
+                trackEvent('register_submit_success');
+                // Auto-login: redirect to cabinet with token
+                if (data.autoLoginToken) {
+                    window.location.href = 'https://my.clawdcloud.codecrafters.kz/auto-login?token=' + encodeURIComponent(data.autoLoginToken);
+                    return;
+                }
+                // Fallback if no token returned
                 waitlistForm.reset();
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalText;
                 closeDeployModal();
                 showSuccessModal();
-                trackEvent('register_submit_success');
             } catch (err) {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalText;

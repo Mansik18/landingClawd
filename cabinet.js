@@ -123,6 +123,26 @@ app.get('/', authMiddleware, (req, res) => {
   res.redirect(statusRedirect(req.user));
 });
 
+// --- Auto-login (from registration redirect) ---
+app.get('/auto-login', (req, res) => {
+  const { token } = req.query;
+  if (!token) return res.redirect('/login');
+  try {
+    const payload = jwt.verify(token, JWT_SECRET);
+    if (payload.purpose !== 'auto-login') return res.redirect('/login');
+    const user = findUserById.get(payload.userId);
+    if (!user) return res.redirect('/login');
+    const sessionToken = jwt.sign({ userId: user.id, email: user.email }, JWT_SECRET, { expiresIn: '7d' });
+    res.cookie('cabinet_token', sessionToken, {
+      httpOnly: true, secure: true, sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+    res.redirect(statusRedirect(user));
+  } catch {
+    res.redirect('/login');
+  }
+});
+
 // --- Login ---
 app.get('/login', (_req, res) => {
   res.sendFile(path.join(__dirname, 'cabinet', 'login.html'));

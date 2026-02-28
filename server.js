@@ -118,14 +118,20 @@ app.post('/api/register', registerLimiter, (req, res) => {
 
   try {
     const hash = bcrypt.hashSync(password, 10);
-    insertUser.run({
+    const result = insertUser.run({
       email: email.trim().toLowerCase(),
       password_hash: hash,
       first_name: firstName.trim(),
       last_name: (lastName || '').trim(),
       telegram: (telegram || '').trim(),
     });
-    res.json({ success: true });
+    // Auto-login token for seamless redirect to cabinet
+    const autoLoginToken = jwt.sign(
+      { userId: result.lastInsertRowid, email: email.trim().toLowerCase(), purpose: 'auto-login' },
+      JWT_SECRET,
+      { expiresIn: '60s' }
+    );
+    res.json({ success: true, autoLoginToken });
   } catch (err) {
     if (err.code === 'SQLITE_CONSTRAINT_UNIQUE') {
       return res.status(409).json({ error: 'Этот email уже зарегистрирован' });
