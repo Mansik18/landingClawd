@@ -37,6 +37,11 @@ const dbPath = process.env.DB_PATH || path.join(__dirname, 'clawd.db');
 const db = new Database(dbPath);
 db.pragma('journal_mode = WAL');
 
+// Migrations (safe if columns already exist)
+try { db.exec(`ALTER TABLE users ADD COLUMN bot_username TEXT DEFAULT ''`); } catch {}
+try { db.exec(`ALTER TABLE users ADD COLUMN auto_paired INTEGER DEFAULT 0`); } catch {}
+try { db.exec(`ALTER TABLE users ADD COLUMN telegram_chat_id TEXT DEFAULT ''`); } catch {}
+
 const findUserByEmail = db.prepare('SELECT * FROM users WHERE email = ?');
 const findUserById = db.prepare('SELECT * FROM users WHERE id = ?');
 const updateBotTokenAndUsername = db.prepare(
