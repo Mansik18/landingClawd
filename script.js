@@ -179,62 +179,72 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- Terminal Typing Effect ---
-    function getCommands() {
-        const t = translations[window.__currentLang || 'ru'];
-        return [
-            { cmd: t['terminal.cmd1'], output: t['terminal.out1'] },
-            { cmd: t['terminal.cmd2'], output: t['terminal.out2'] },
-            { cmd: t['terminal.cmd3'], output: t['terminal.out3'] },
-            { cmd: t['terminal.cmd4'], output: t['terminal.out4'] },
-            { cmd: t['terminal.cmd5'], output: t['terminal.out5'] },
-        ];
-    }
+    // --- Chat Preview Animation ---
+    const chatBody = document.getElementById('chatBody');
+    const typingIndicator = document.getElementById('typingIndicator');
 
-    const terminalCommand = document.getElementById('terminalCommand');
-    const terminalOutput = document.getElementById('terminalOutput');
-    let cmdIndex = 0;
+    function runChatAnimation() {
+        if (!chatBody) return;
+        const rows = Array.from(chatBody.querySelectorAll('.chat-bubble-row'));
 
-    function typeCommand(text, callback) {
-        let i = 0;
-        terminalCommand.textContent = '';
-        terminalOutput.textContent = '';
+        function scrollDown() {
+            requestAnimationFrame(() => {
+                chatBody.scrollTop = chatBody.scrollHeight;
+            });
+        }
 
-        function type() {
-            if (i < text.length) {
-                terminalCommand.textContent += text[i];
-                i++;
-                setTimeout(type, 30 + Math.random() * 40);
+        function hideAll() {
+            rows.forEach(r => r.classList.add('chat-hidden'));
+            if (typingIndicator) typingIndicator.classList.add('chat-hidden');
+        }
+
+        // Build sequence: for each bot row, insert typing step before it
+        const steps = [];
+        rows.forEach(row => {
+            if (row.classList.contains('chat-row-bot')) {
+                steps.push({ type: 'typing' });
+            }
+            steps.push({ type: 'message', row });
+        });
+
+        hideAll();
+        let si = 0;
+
+        function nextStep() {
+            if (si >= steps.length) {
+                // All messages shown — pause then reset loop
+                setTimeout(() => {
+                    hideAll();
+                    setTimeout(() => { chatBody.scrollTop = 0; }, 400);
+                    si = 0;
+                    setTimeout(nextStep, 1500);
+                }, 5000);
+                return;
+            }
+
+            const step = steps[si];
+            si++;
+
+            if (step.type === 'typing' && typingIndicator) {
+                typingIndicator.classList.remove('chat-hidden');
+                scrollDown();
+                // Show dots for a bit, then hide and proceed to message
+                setTimeout(() => {
+                    typingIndicator.classList.add('chat-hidden');
+                    setTimeout(nextStep, 150); // brief pause before message appears
+                }, 1200);
             } else {
-                setTimeout(callback, 500);
+                step.row.classList.remove('chat-hidden');
+                scrollDown();
+                setTimeout(nextStep, 800);
             }
         }
-        type();
+
+        setTimeout(nextStep, 1200);
     }
 
-    function showOutput(text, callback) {
-        terminalOutput.style.opacity = '0';
-        terminalOutput.textContent = text;
-        setTimeout(() => {
-            terminalOutput.style.transition = 'opacity 0.3s';
-            terminalOutput.style.opacity = '1';
-            setTimeout(callback, 3000);
-        }, 100);
-    }
-
-    function runTerminalLoop() {
-        const cmds = getCommands();
-        const { cmd, output } = cmds[cmdIndex];
-        typeCommand(cmd, () => {
-            showOutput(output, () => {
-                cmdIndex = (cmdIndex + 1) % cmds.length;
-                runTerminalLoop();
-            });
-        });
-    }
-
-    if (terminalCommand) {
-        setTimeout(runTerminalLoop, 1500);
+    if (chatBody) {
+        runChatAnimation();
     }
 
     // --- Animated Counters ---
